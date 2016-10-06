@@ -53,6 +53,10 @@ module Hubrise
         api_call('/callback')
       end
 
+      def get_callback_events
+        api_call('/callback/events')
+      end
+
       def update_callback(params)
         api_call('/callback', :post, params)
       end
