@@ -65,7 +65,7 @@ module Hubrise
         api_call('/callback', :post, params)
       end
 
-      def destroy_callback
+      def delete_callback
         api_call('/callback', :delete)
       end
 
