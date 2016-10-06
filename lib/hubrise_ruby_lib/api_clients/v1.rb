@@ -57,6 +57,10 @@ module Hubrise
         api_call('/callback/events')
       end
 
+      def delete_event(event_id)
+        api_call("callback/events/#{event_id}", :delete)
+      end
+
       def update_callback(params)
         api_call('/callback', :post, params)
       end
