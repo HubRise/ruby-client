@@ -127,7 +127,7 @@ module Hubrise
 
       def customer_list_id_fallback(customer_list_id)
         customer_list_id ||= @customer_list_id
-        raise('Ambiguous customer_list_id for this scope') if customer_list_id.nil?
+        raise('customer_list_id required') if customer_list_id.nil? || customer_list_id.empty?
         customer_list_id
       end
     end
