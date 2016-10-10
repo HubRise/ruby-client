@@ -19,7 +19,7 @@ module Hubrise
         delete: Net::HTTP::Delete
       }
 
-      attr_accessor :access_token, :app_instance_id, :catalog_id, :customer_list_id
+      attr_accessor :access_token, :app_instance_id, :user_id, :account_id, :location_id, :catalog_id, :customer_list_id
 
       def self.register(version)
         APIClientsFactory.register_version(version, self)
@@ -30,6 +30,9 @@ module Hubrise
         @app_secret       = app_secret
         @access_token     = params[:access_token]
         @app_instance_id  = params[:app_instance_id]
+        @user_id          = params[:user_id]
+        @account_id       = params[:account_id]
+        @location_id      = params[:location_id]
         @catalog_id       = params[:catalog_id]
         @customer_list_id = params[:customer_list_id]
 
@@ -76,6 +79,9 @@ module Hubrise
           json_body         = JSON.parse(http_response.body)
           @access_token     = json_body['access_token']
           @app_instance_id  = json_body['app_instance_id']
+          @user_id          = json_body['user_id']
+          @account_id       = json_body['account_id']
+          @location_id      = json_body['location_id']
           @catalog_id       = json_body['catalog_id']
           @customer_list_id = json_body['customer_list_id']
         when Net::HTTPNotFound
