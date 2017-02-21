@@ -8,6 +8,9 @@ module Hubrise
         VERSION
       end
 
+      # --------------------
+      # Accounts, locations, user
+      # --------------------
       def get_account(account_id = nil)
         path = account_id ? "/accounts/#{account_id}" : '/account'
         api_call(path)
@@ -33,6 +36,9 @@ module Hubrise
         end
       end
 
+      # --------------------
+      # Orders
+      # --------------------
       def get_orders(location_id, search_params)
         api_call("/locations/#{location_id}/orders", :get, search_params)
       end
@@ -49,6 +55,9 @@ module Hubrise
         api_call("/locations/#{location_id}/orders/#{order_id}", :put, params)
       end
 
+      # --------------------
+      # Callback, events
+      # --------------------
       def get_callback
         api_call('/callback')
       end
@@ -69,6 +78,9 @@ module Hubrise
         api_call('/callback', :delete)
       end
 
+      # --------------------
+      # Customer lists, customers
+      # --------------------
       def get_location_customer_lists(location_id)
         api_call("/locations/#{location_id}/customer_lists")
       end
@@ -99,6 +111,17 @@ module Hubrise
 
       def update_customer(customer_id, params, customer_list_id = nil)
         api_call("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}", :put, params)
+      end
+
+      # --------------------
+      # Catalogs
+      # --------------------
+      def get_location_catalogs(location_id)
+        api_call("/locations/#{location_id}/catalogs")
+      end
+
+      def get_account_catalogs(account_id)
+        api_call("/accounts/#{account_id}/catalogs")
       end
 
       def get_catalog(catalog_id = nil)
