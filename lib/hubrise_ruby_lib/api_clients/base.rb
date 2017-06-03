@@ -68,7 +68,7 @@ module Hubrise
 
       def request_token_and_remember!(authorization_code)
         uri           = URI(oauth2_hubrise_hostname_with_version + '/token')
-        request       = build_request(uri, :post, {
+        request       = build_json_request(uri, :post, {
           client_id:      @app_id,
           client_secret:  @app_secret,
           code:           authorization_code
@@ -91,11 +91,22 @@ module Hubrise
         end
       end
 
-      def api_call(path, method = :get, data = {})
-        raise HubriseAccessTokenMissing if !access_token
+      def api_json_call(path, method = :get, data = {})
+        uri= URI.parse(api_hostname_with_version + path)
 
-        uri     = URI.parse(api_hostname_with_version + path)
-        request = build_request(uri, method, data)
+        if method == :get
+          uri  = add_params_to_uri(uri, data)
+        else
+          data = data.to_json
+          headers.merge!('Content-Type' => 'application/json')
+        end
+
+        request = build_request(uri, method, data, headers)
+        api_call(uri, request)
+      end
+
+      def api_call(uri, request)
+        raise(HubriseAccessTokenMissing) if access_token.nil?
 
         case http_response = http_request(uri, request)
         when Net::HTTPUnauthorized
@@ -127,15 +138,11 @@ module Hubrise
         raise NotImplementedError.new
       end
 
-      def build_request(uri, method, data)
-        uri     = add_params_to_uri(uri, data) if method == :get
-        request = REQUESTS_HASH[method].new(uri,
-          {
-            'Content-Type'    => 'application/json',
-            'X-Access-Token'  => access_token || ''
-          }
+      def build_request(uri, method, data, headers = {})
+        request = REQUESTS_HASH[method].new(
+          uri, headers.merge('X-Access-Token' => access_token)
         )
-        request.body = data.to_json if method != :get
+        request.body = data
         request
       end
 
