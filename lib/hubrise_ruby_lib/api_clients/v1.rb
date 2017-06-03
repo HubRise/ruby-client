@@ -144,6 +144,19 @@ module Hubrise
         api_json_call("/catalogs/#{catalog_id_fallback(catalog_id)}", :put, params)
       end
 
+      # --------------------
+      # Images
+      # --------------------
+
+      def create_image(data, mime_type, catalog_id = nil)
+        uri= URI.parse(api_hostname_with_version + "/catalogs/#{catalog_id_fallback(catalog_id)}/images")
+
+        headers = { 'Content-Type' => mime_type }
+        request = build_request(uri, :post, data, headers)
+
+        api_call(uri, request)
+      end
+
       private
 
       def customer_list_id_fallback(customer_list_id)
