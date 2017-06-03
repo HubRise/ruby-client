@@ -125,8 +125,7 @@ module Hubrise
       end
 
       def get_catalog(catalog_id = nil)
-        catalog_id ||= @catalog_id
-        api_call("/catalogs/#{catalog_id}")
+        api_call("/catalogs/#{catalog_id_fallback(catalog_id)}")
       end
 
       def create_account_catalog(params)
@@ -142,8 +141,7 @@ module Hubrise
       end
 
       def update_catalog(params, catalog_id = nil)
-        catalog_id ||= @catalog_id
-        api_call("/catalogs/#{catalog_id}", :put, params)
+        api_call("/catalogs/#{catalog_id_fallback(catalog_id)}", :put, params)
       end
 
       private
@@ -152,6 +150,12 @@ module Hubrise
         customer_list_id ||= @customer_list_id
         raise('customer_list_id required') if customer_list_id.nil? || customer_list_id.empty?
         customer_list_id
+      end
+
+      def catalog_id_fallback(catalog_id)
+        catalog_id ||= @catalog_id
+        raise('catalog_id required') if catalog_id.nil? || catalog_id.empty?
+        catalog_id
       end
     end
   end
