@@ -68,7 +68,7 @@ module Hubrise
 
       def request_token_and_remember!(authorization_code)
         uri           = URI(oauth2_hubrise_hostname_with_version + '/token')
-        request       = build_request(uri, :post, {
+        request       = build_json_request(uri, :post, {
           client_id:      @app_id,
           client_secret:  @app_secret,
           code:           authorization_code
@@ -93,7 +93,7 @@ module Hubrise
 
       def api_json_call(path, method = :get, data = {})
         uri     = URI.parse(api_hostname_with_version + path)
-        request = build_json_request(uri, method, data, headers)
+        request = build_json_request(uri, method, data)
 
         api_call(uri, request)
       end
@@ -134,6 +134,7 @@ module Hubrise
       def build_json_request(uri, method, data, headers = {})
         if method == :get
           uri  = add_params_to_uri(uri, data)
+          data = nil
         else
           data = data.to_json
           headers.merge!('Content-Type' => 'application/json')
@@ -144,7 +145,7 @@ module Hubrise
 
       def build_request(uri, method, data, headers = {})
         request = REQUESTS_HASH[method].new(
-          uri, headers.merge('X-Access-Token' => access_token)
+          uri, headers.merge('X-Access-Token' => access_token || '')
         )
         request.body = data
         request
