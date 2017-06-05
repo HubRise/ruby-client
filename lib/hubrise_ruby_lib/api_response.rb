@@ -1,17 +1,19 @@
 module Hubrise
   class APIResponse
-    attr_reader :code, :failed, :data, :error_type, :error_message, :errors
+    attr_reader :code, :failed, :data, :error_type, :error_message, :errors, :http_response
     alias_method :failed?, :failed
 
     def initialize(http_response)
       @http_response  = http_response
       @code           = http_response.code
-      json_body       = JSON.parse(http_response.body) rescue nil
+
+      json_body = JSON.parse(http_response.body) rescue nil
+
+      @data = json_body || http_response.body
 
       case http_response
       when Net::HTTPSuccess
         @failed  = false
-        @data    = json_body
       else
         @failed  = true
         if json_body

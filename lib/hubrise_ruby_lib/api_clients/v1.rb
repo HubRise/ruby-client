@@ -157,6 +157,14 @@ module Hubrise
         api_call(uri, request)
       end
 
+      def get_image(image_id, catalog_id = nil)
+        api_json_call("/catalogs/#{catalog_id_fallback(catalog_id)}/images/#{image_id}")
+      end
+
+      def get_image_data(image_id, catalog_id = nil)
+        api_json_call("/catalogs/#{catalog_id_fallback(catalog_id)}/images/#{image_id}/data")
+      end
+
       private
 
       def customer_list_id_fallback(customer_list_id)
