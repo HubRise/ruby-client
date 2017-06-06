@@ -23,5 +23,9 @@ module Hubrise
         end
       end
     end
+
+    def retry_after
+      http_response.kind_of?(Net::HTTPTooManyRequests) && http_response['retry-after'].to_i
+    end
   end
 end
