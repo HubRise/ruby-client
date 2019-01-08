@@ -41,6 +41,8 @@ module Hubrise
         @oauth_host     = params[:oauth_host] || DEFAULT_OAUTH_HOST
         @oauth_port     = params[:oauth_port] || DEFAULT_OAUTH_PORT
         @use_https      = !!params.fetch(:use_https, USE_HTTPS)
+
+        @verbose = params[:verbose]
       end
 
       def build_authorization_url(redirect_uri, scope, params = {})
@@ -66,6 +68,13 @@ module Hubrise
         http.request(request)
       end
 
+      def log_http(http_request, http_response)
+        if @verbose
+          puts "REQUEST: #{http_request.uri}"
+          puts " -> RESPONSE: [#{http_response.code}] #{http_response.message}"
+        end
+      end
+
       def request_token_and_remember!(authorization_code)
         uri           = URI(oauth2_hubrise_hostname_with_version + '/token')
         request       = build_json_request(uri, :post, {
@@ -74,7 +83,10 @@ module Hubrise
           code:           authorization_code
         })
 
-        case http_response = http_request(uri, request)
+        http_response = http_request(uri, request)
+        log_http(request, http_response)
+
+        case http_response
         when Net::HTTPSuccess
           json_body         = JSON.parse(http_response.body)
           @access_token     = json_body['access_token']
@@ -101,7 +113,10 @@ module Hubrise
       def api_call(uri, request)
         raise(HubriseAccessTokenMissing) if access_token.nil?
 
-        case http_response = http_request(uri, request)
+        http_response = http_request(uri, request)
+        log_http(request, http_response)
+
+        case http_response
         when Net::HTTPUnauthorized
           raise InvalidHubriseToken
         else
