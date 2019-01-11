@@ -19,7 +19,14 @@ module Hubrise
         delete: Net::HTTP::Delete
       }
 
-      attr_accessor :access_token, :app_instance_id, :user_id, :account_id, :location_id, :catalog_id, :customer_list_id
+      attr_accessor :access_token,
+                    :app_instance_id,
+                    :user_id,
+                    :account_id,
+                    :location_id,
+                    :catalog_id,
+                    :customer_list_id,
+                    :logger
 
       def self.register(version)
         APIClientsFactory.register_version(version, self)
@@ -42,7 +49,10 @@ module Hubrise
         @oauth_port     = params[:oauth_port] || DEFAULT_OAUTH_PORT
         @use_https      = !!params.fetch(:use_https, USE_HTTPS)
 
-        @verbose = params[:verbose]
+        unless @logger = params[:logger]
+          @logger = Logger.new(STDOUT)
+          @logger.level = !!params[:verbous] ? Logger::DEBUG : Logger::WARN
+        end
       end
 
       def build_authorization_url(redirect_uri, scope, params = {})
@@ -65,14 +75,8 @@ module Hubrise
       def http_request(uri, request)
         http          = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl  = @use_https
+        http.set_debug_output(logger) if logger.debug?
         http.request(request)
-      end
-
-      def log_http(http_request, http_response)
-        if @verbose
-          puts "REQUEST: #{http_request.uri}"
-          puts " -> RESPONSE: [#{http_response.code}] #{http_response.message}"
-        end
       end
 
       def request_token_and_remember!(authorization_code)
@@ -84,7 +88,6 @@ module Hubrise
         })
 
         http_response = http_request(uri, request)
-        log_http(request, http_response)
 
         case http_response
         when Net::HTTPSuccess
@@ -114,7 +117,6 @@ module Hubrise
         raise(HubriseAccessTokenMissing) if access_token.nil?
 
         http_response = http_request(uri, request)
-        log_http(request, http_response)
 
         case http_response
         when Net::HTTPUnauthorized
