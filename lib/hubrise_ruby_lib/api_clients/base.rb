@@ -19,7 +19,14 @@ module Hubrise
         delete: Net::HTTP::Delete
       }
 
-      attr_accessor :access_token, :app_instance_id, :user_id, :account_id, :location_id, :catalog_id, :customer_list_id
+      attr_accessor :access_token,
+                    :app_instance_id,
+                    :user_id,
+                    :account_id,
+                    :location_id,
+                    :catalog_id,
+                    :customer_list_id,
+                    :logger
 
       def self.register(version)
         APIClientsFactory.register_version(version, self)
@@ -41,6 +48,12 @@ module Hubrise
         @oauth_host     = params[:oauth_host] || DEFAULT_OAUTH_HOST
         @oauth_port     = params[:oauth_port] || DEFAULT_OAUTH_PORT
         @use_https      = !!params.fetch(:use_https, USE_HTTPS)
+
+        @verbous = !!params[:verbous]
+        unless @logger = params[:logger]
+          @logger = Logger.new(STDOUT)
+          @logger.level = @verbous ? Logger::DEBUG : Logger::WARN
+        end
       end
 
       def build_authorization_url(redirect_uri, scope, params = {})
@@ -63,6 +76,7 @@ module Hubrise
       def http_request(uri, request)
         http          = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl  = @use_https
+        http.set_debug_output(logger) if @verbous
         http.request(request)
       end
 
@@ -74,7 +88,9 @@ module Hubrise
           code:           authorization_code
         })
 
-        case http_response = http_request(uri, request)
+        http_response = http_request(uri, request)
+
+        case http_response
         when Net::HTTPSuccess
           json_body         = JSON.parse(http_response.body)
           @access_token     = json_body['access_token']
@@ -101,7 +117,9 @@ module Hubrise
       def api_call(uri, request)
         raise(HubriseAccessTokenMissing) if access_token.nil?
 
-        case http_response = http_request(uri, request)
+        http_response = http_request(uri, request)
+
+        case http_response
         when Net::HTTPUnauthorized
           raise InvalidHubriseToken
         else

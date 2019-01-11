@@ -10,9 +10,9 @@ module Hubrise
       VERSIONS_HASH.keys
     end
 
-    def self.build(app_id, app_secret, version, options = {})
+    def self.build(app_id, app_secret, version, params = {})
       if version_class = VERSIONS_HASH[version]
-        version_class.new(app_id, app_secret, options)
+        version_class.new(app_id, app_secret, params)
       else
         raise "Version is not available: #{version}"
       end
