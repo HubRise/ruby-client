@@ -49,9 +49,10 @@ module Hubrise
         @oauth_port     = params[:oauth_port] || DEFAULT_OAUTH_PORT
         @use_https      = !!params.fetch(:use_https, USE_HTTPS)
 
+        @verbous = !!params[:verbous]
         unless @logger = params[:logger]
           @logger = Logger.new(STDOUT)
-          @logger.level = !!params[:verbous] ? Logger::DEBUG : Logger::WARN
+          @logger.level = @verbous ? Logger::DEBUG : Logger::WARN
         end
       end
 
@@ -75,7 +76,7 @@ module Hubrise
       def http_request(uri, request)
         http          = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl  = @use_https
-        http.set_debug_output(logger) if logger.debug?
+        http.set_debug_output(logger) if @verbous
         http.request(request)
       end
 
