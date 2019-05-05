@@ -28,10 +28,6 @@ module Hubrise
                     :customer_list_id,
                     :logger
 
-      def self.register(version)
-        APIClientsFactory.register_version(version, self)
-      end
-
       def initialize(app_id, app_secret, params = {})
         @app_id           = app_id
         @app_secret       = app_secret

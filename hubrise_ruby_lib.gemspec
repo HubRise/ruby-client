@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.files       = [
     'lib/hubrise_ruby_lib.rb',
     'lib/hubrise_ruby_lib/api_response.rb',
-    'lib/hubrise_ruby_lib/api_clients_factory.rb',
     'lib/hubrise_ruby_lib/api_clients/base.rb',
     'lib/hubrise_ruby_lib/api_clients/v1.rb'
   ]

@@ -2,7 +2,6 @@ module Hubrise
   module APIClients
     class V1 < Base
       VERSION = :v1
-      register(VERSION)
 
       def version
         VERSION
