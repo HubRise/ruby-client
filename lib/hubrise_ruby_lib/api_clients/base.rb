@@ -141,10 +141,6 @@ module Hubrise
         @use_https ? 'https' : 'http'
       end
 
-      def version
-        raise NotImplementedError.new
-      end
-
       def build_json_request(uri, method, data, headers = {})
         if method == :get
           uri  = add_params_to_uri(uri, data)

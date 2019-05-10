@@ -1,11 +1,7 @@
 module Hubrise
   module APIClients
     class V1 < Base
-      VERSION = :v1
-
-      def version
-        VERSION
-      end
+      def version; :v1; end
 
       # --------------------
       # Accounts, locations, user
