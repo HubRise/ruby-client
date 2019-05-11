@@ -19,4 +19,6 @@ Gem::Specification.new do |s|
     'lib/hubrise_ruby_lib/api_clients/base.rb',
     'lib/hubrise_ruby_lib/api_clients/v1.rb'
   ]
+
+  s.add_development_dependency "rspec"
 end
