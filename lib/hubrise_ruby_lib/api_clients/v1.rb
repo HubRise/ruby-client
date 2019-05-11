@@ -7,27 +7,30 @@ module Hubrise
       # Accounts, locations, user
       # --------------------
       def get_account(account_id = nil)
-        path = account_id ? "/accounts/#{account_id}" : '/account'
-        api_json_call(path)
+        if account_id
+          call_api("/accounts/#{account_id}")
+        else
+          call_api("/account")
+        end
       end
 
       def get_accounts
-        api_json_call('/accounts')
+        call_api('/accounts')
       end
 
       def get_user
-        api_json_call('/user')
+        call_api('/user')
       end
 
       def get_locations
-        api_json_call('/locations')
+        call_api('/locations')
       end
 
       def get_location(location_id = nil)
         if location_id
-          api_json_call("/locations/#{location_id}")
+          call_api("/locations/#{location_id}")
         else
-          api_json_call('/location')
+          call_api('/location')
         end
       end
 
@@ -35,57 +38,57 @@ module Hubrise
       # Orders
       # --------------------
       def get_orders(location_id, search_params)
-        api_json_call("/locations/#{location_id}/orders", :get, search_params)
+        call_api("/locations/#{location_id}/orders", :get, data: search_params)
       end
 
       def get_order(location_id, order_id)
-        api_json_call("/locations/#{location_id}/orders/#{order_id}")
+        call_api("/locations/#{location_id}/orders/#{order_id}")
       end
 
       def create_order(location_id, params)
-        api_json_call("/locations/#{location_id}/orders", :post, params)
+        call_api("/locations/#{location_id}/orders", :post, data: params)
       end
 
       def update_order(location_id, order_id, params)
-        api_json_call("/locations/#{location_id}/orders/#{order_id}", :put, params)
+        call_api("/locations/#{location_id}/orders/#{order_id}", :put, data: params)
       end
 
       # --------------------
       # Callback, events
       # --------------------
       def get_callback
-        api_json_call('/callback')
+        call_api('/callback')
       end
 
       def get_callback_events
-        api_json_call('/callback/events')
+        call_api('/callback/events')
       end
 
       def delete_event(event_id)
-        api_json_call("/callback/events/#{event_id}", :delete)
+        call_api("/callback/events/#{event_id}", :delete)
       end
 
       def update_callback(params)
-        api_json_call('/callback', :post, params)
+        call_api('/callback', :post, data: params)
       end
 
       def delete_callback
-        api_json_call('/callback', :delete)
+        call_api('/callback', :delete)
       end
 
       # --------------------
       # Customer lists, customers
       # --------------------
       def get_location_customer_lists(location_id)
-        api_json_call("/locations/#{location_id}/customer_lists")
+        call_api("/locations/#{location_id}/customer_lists")
       end
 
       def get_account_customer_lists(account_id)
-        api_json_call("/accounts/#{account_id}/customer_lists")
+        call_api("/accounts/#{account_id}/customer_lists")
       end
 
       def get_customer_list(customer_list_id = nil)
-        api_json_call("/customer_lists/#{customer_list_id_fallback(customer_list_id)}")
+        call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}")
       end
 
       def get_all_customers(customer_list_id = nil)
@@ -93,50 +96,50 @@ module Hubrise
       end
 
       def search_customers(search_params, customer_list_id = nil)
-        api_json_call("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers", :get, search_params)
+        call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers", :get, data: search_params)
       end
 
       def get_customer(customer_id, customer_list_id = nil)
-        api_json_call("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}")
+        call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}")
       end
 
       def create_customer(params, customer_list_id = nil)
-        api_json_call("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers", :post, params)
+        call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers", :post, data: params)
       end
 
       def update_customer(customer_id, params, customer_list_id = nil)
-        api_json_call("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}", :put, params)
+        call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}", :put, data: params)
       end
 
       # --------------------
       # Catalogs
       # --------------------
       def get_location_catalogs(location_id)
-        api_json_call("/locations/#{location_id}/catalogs")
+        call_api("/locations/#{location_id}/catalogs")
       end
 
       def get_account_catalogs(account_id)
-        api_json_call("/accounts/#{account_id}/catalogs")
+        call_api("/accounts/#{account_id}/catalogs")
       end
 
       def get_catalog(catalog_id = nil)
-        api_json_call("/catalogs/#{catalog_id_fallback(catalog_id)}")
+        call_api("/catalogs/#{catalog_id_fallback(catalog_id)}")
       end
 
       def create_account_catalog(params)
-        api_json_call("/account/catalogs", :post, params)
+        call_api("/account/catalogs", :post, data: params)
       end
 
       def create_location_catalog(params, location_id = nil)
         if location_id
-          api_json_call("/locations/#{location_id}/catalogs", :post, params)
+          call_api("/locations/#{location_id}/catalogs", :post, data: params)
         else
-          api_json_call("/location/catalogs", :post, params)
+          call_api("/location/catalogs", :post, data: params)
         end
       end
 
       def update_catalog(params, catalog_id = nil)
-        api_json_call("/catalogs/#{catalog_id_fallback(catalog_id)}", :put, params)
+        call_api("/catalogs/#{catalog_id_fallback(catalog_id)}", :put, data: params)
       end
 
       # --------------------
@@ -144,20 +147,15 @@ module Hubrise
       # --------------------
 
       def create_image(data, mime_type, catalog_id = nil)
-        uri= URI.parse(api_hostname_with_version + "/catalogs/#{catalog_id_fallback(catalog_id)}/images")
-
-        headers = { 'Content-Type' => mime_type }
-        request = build_request(uri, :post, data, headers)
-
-        api_call(uri, request)
+        call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images", :post, data: data, headers: { 'Content-Type' => mime_type }, json: false)
       end
 
       def get_image(image_id, catalog_id = nil)
-        api_json_call("/catalogs/#{catalog_id_fallback(catalog_id)}/images/#{image_id}")
+        call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images/#{image_id}")
       end
 
       def get_image_data(image_id, catalog_id = nil)
-        api_json_call("/catalogs/#{catalog_id_fallback(catalog_id)}/images/#{image_id}/data")
+        call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images/#{image_id}/data")
       end
 
       private
