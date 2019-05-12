@@ -16,15 +16,15 @@ module Hubrise
     end
 
     def perform(method, path, data, json: true, headers: {})
-      uri           = URI.parse(@protocol + "//" + hostname + path)
+      uri           = URI.parse(@protocol + "://" + @hostname + path)
       http_request  = build_request(uri, method, data, json: json, headers: headers)
-      http_response = perform_request(uri, http_request, logger: @logger)
+      http_response = perform_request(uri, http_request)
 
       case http_response
       when Net::HTTPUnauthorized
         raise InvalidHubriseToken
       else
-        if http_response.code.starts_with?('5')
+        if http_response.code.start_with?('5')
           raise HubriseError, 'Unexpected error'
         else
           APIResponse.new(http_response)

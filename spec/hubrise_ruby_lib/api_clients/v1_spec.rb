@@ -3,142 +3,143 @@ require "spec_helper"
 describe Hubrise::APIClients::V1 do
   let(:client)  { Hubrise::APIClients::V1.new(nil, nil, access_token: "access_token1") }
 
-  let!(:api_request) do
-    double(:api_request).tap do |api_request|
-      allow(Hubrise::APIRequest).to receive(:new).with(
-        hostname: "api.hubrise.com:433/v1", access_token: "access_token1", use_https: true, logger: an_instance_of(Logger)
-      ).and_return(api_request)
-    end
-  end
-  let(:api_response) { Hubrise::APIResponse.new(Net::HTTPResponse.new(1.0, 200, "OK")) }
-
   {
     get_account: {
-      [{}, ["abc"]] => [:get, "/accounts/abc", {}],
-      [{}, []] => [:get, "/account", {}],
+      [{}, ["zrn61"]] => [:get, "/accounts/zrn61"],
+      [{}, []] => [:get, "/account"],
     },
     get_accounts: {
-      [{}, []] => [:get, "/accounts", {}]
+      [{}, []] => [:get, "/accounts"]
     },
     get_user: {
-      [{}, []] => [:get, "/user", {}]
+      [{}, []] => [:get, "/user"]
     },
     get_locations: {
-      [{}, []] => [:get, "/locations", {}]
+      [{}, []] => [:get, "/locations"]
     },
     get_location: {
-      [{}, ["abc"]] => [:get, "/locations/abc", {}],
-      [{}, []] => [:get, "/location", {}],
+      [{}, ["zrn61"]] => [:get, "/locations/zrn61"],
+      [{}, []] => [:get, "/location"],
     },
     get_orders: {
-      [{}, ["abc", { status: "new" }]] => [:get, "/locations/abc/orders", { status: "new" }]
+      [{}, ["zrn61", { status: "new" }]] => [:get, "/locations/zrn61/orders?status=new"]
     },
     get_order: {
-      [{}, ["abc", "qwe"]] => [:get, "/locations/abc/orders/qwe", {}]
+      [{}, ["zrn61", "wy3xz"]] => [:get, "/locations/zrn61/orders/wy3xz"]
     },
     create_order: {
-      [{}, ["abc", { status: "new" }]] => [:post, "/locations/abc/orders", { status: "new" }]
+      [{}, ["zrn61", { status: "new" }]] => [:post, "/locations/zrn61/orders", { body: '{"status":"new"}', headers: { "Content-Type" => "application/json" } }]
     },
     update_order: {
-      [{}, ["abc", "qwe", { status: "delivered" }]] => [:put, "/locations/abc/orders/qwe", { status: "delivered" }]
+      [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:put, "/locations/zrn61/orders/wy3xz", { body: '{"status":"delivered"}', headers: { "Content-Type" => "application/json" } }]
     },
     get_callback: {
-      [{}, []] => [:get, "/callback", {}]
+      [{}, []] => [:get, "/callback"]
     },
     get_callback_events: {
-      [{}, []] => [:get, "/callback/events", {}]
+      [{}, []] => [:get, "/callback/events"]
     },
     delete_event: {
-      [{}, ["abc"]] => [:delete, "/callback/events/abc", {}]
+      [{}, ["zrn61"]] => [:delete, "/callback/events/zrn61"]
     },
     update_callback: {
-      [{}, [{ 'order' => ['create'] }]] => [:post, "/callback", { 'order' => ['create'] }]
+      [{}, [{ 'order' => ['create'] }]] => [:post, "/callback", { body: '{"order":["create"]}', headers: { "Content-Type" => "application/json" } }]
     },
     delete_callback: {
-      [{}, []] => [:delete, "/callback", {}]
+      [{}, []] => [:delete, "/callback"]
     },
     get_location_customer_lists: {
-      [{}, ["abc"]] => [:get, "/locations/abc/customer_lists", {}]
+      [{}, ["zrn61"]] => [:get, "/locations/zrn61/customer_lists"]
     },
     get_account_customer_lists: {
-      [{}, ["abc"]] => [:get, "/accounts/abc/customer_lists", {}]
+      [{}, ["zrn61"]] => [:get, "/accounts/zrn61/customer_lists"]
     },
     get_customer_list: {
-      [{}, ["abc"]] => [:get, "/customer_lists/abc", {}],
-      [{ customer_list_id: "qwe" }, []] => [:get, "/customer_lists/qwe", {}]
+      [{}, ["zrn61"]] => [:get, "/customer_lists/zrn61"],
+      [{ customer_list_id: "wy3xz" }, []] => [:get, "/customer_lists/wy3xz"]
     },
     get_all_customers: {
-      [{}, ["abc"]] => [:get, "/customer_lists/abc/customers", {}],
-      [{ customer_list_id: "qwe" }, []] => [:get, "/customer_lists/qwe/customers", {}]
+      [{}, ["zrn61"]] => [:get, "/customer_lists/zrn61/customers"],
+      [{ customer_list_id: "wy3xz" }, []] => [:get, "/customer_lists/wy3xz/customers"]
     },
     search_customers: {
-      [{ customer_list_id: "abc" }, [{ email: "nsave@*" }]] => [:get, "/customer_lists/abc/customers", { email: "nsave@*" }],
-      [{}, [{ email: "nsave@*" }, "qwe"]] => [:get, "/customer_lists/qwe/customers", { email: "nsave@*" }]
+      [{ customer_list_id: "zrn61" }, [{ email: "nsave@*" }]] => [:get, "/customer_lists/zrn61/customers?email=nsave@*"],
+      [{}, [{ email: "nsave@*" }, "wy3xz"]] => [:get, "/customer_lists/wy3xz/customers?email=nsave@*"]
     },
     get_customer: {
-      [{ customer_list_id: "abc" }, ["zxc"]] => [:get, "/customer_lists/abc/customers/zxc", {}],
-      [{}, ["zxc", "qwe"]] => [:get, "/customer_lists/qwe/customers/zxc", {}]
+      [{ customer_list_id: "zrn61" }, ["zrk6b"]] => [:get, "/customer_lists/zrn61/customers/zrk6b"],
+      [{}, ["zrk6b", "wy3xz"]] => [:get, "/customer_lists/wy3xz/customers/zrk6b"]
     },
     create_customer: {
-      [{ customer_list_id: "abc" }, [{ first_name: "nsave" }]] => [:post, "/customer_lists/abc/customers", { first_name: "nsave" }],
-      [{}, [{ first_name: "nsave" }, "qwe"]] => [:post, "/customer_lists/qwe/customers", { first_name: "nsave" }]
+      [{ customer_list_id: "zrn61" }, [{ first_name: "nsave" }]] => [:post, "/customer_lists/zrn61/customers", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ first_name: "nsave" }, "wy3xz"]] => [:post, "/customer_lists/wy3xz/customers", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }]
     },
     update_customer: {
-      [{ customer_list_id: "abc" }, ["zxc", { first_name: "nsave" }]] => [:put, "/customer_lists/abc/customers/zxc", { first_name: "nsave" }],
-      [{}, ["zxc", { first_name: "nsave" }, "qwe"]] => [:put, "/customer_lists/qwe/customers/zxc", { first_name: "nsave" }]
+      [{ customer_list_id: "zrn61" }, ["zrk6b", { first_name: "nsave" }]] => [:put, "/customer_lists/zrn61/customers/zrk6b", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }],
+      [{}, ["zrk6b", { first_name: "nsave" }, "wy3xz"]] => [:put, "/customer_lists/wy3xz/customers/zrk6b", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }]
     },
     get_location_catalogs: {
-      [{},["abc"]] => [:get, "/locations/abc/catalogs", {}]
+      [{},["zrn61"]] => [:get, "/locations/zrn61/catalogs"]
     },
     get_account_catalogs: {
-      [{}, ["abc"]] => [:get, "/accounts/abc/catalogs", {}]
+      [{}, ["zrn61"]] => [:get, "/accounts/zrn61/catalogs"]
     },
     get_catalog: {
-      [{}, ["abc"]] => [:get, "/catalogs/abc", {}],
-      [{ catalog_id: "qwe" }, []] => [:get, "/catalogs/qwe", {}]
+      [{}, ["zrn61"]] => [:get, "/catalogs/zrn61"],
+      [{ catalog_id: "wy3xz" }, []] => [:get, "/catalogs/wy3xz"]
     },
     create_account_catalog: {
-      [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { name: "Catalog1" }]
+      [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
     },
     create_location_catalog: {
-      [{}, [{ name: "Catalog1" }, "abc"]] => [:post, "/locations/abc/catalogs", { name: "Catalog1" }],
-      [{}, [{ name: "Catalog1" }]] => [:post, "/location/catalogs", { name: "Catalog1" }]
+      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:post, "/locations/zrn61/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ name: "Catalog1" }]] => [:post, "/location/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
     },
     update_catalog: {
-      [{}, [{ name: "Catalog1" }, "abc"]] => [:put, "/catalogs/abc", { name: "Catalog1" }],
-      [{ catalog_id: "zxc" }, [{ name: "Catalog1" }]] => [:put, "/catalogs/zxc", { name: "Catalog1" }]
+      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:put, "/catalogs/zrn61", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }],
+      [{ catalog_id: "zrk6b" }, [{ name: "Catalog1" }]] => [:put, "/catalogs/zrk6b", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
     },
     create_image: {
-      [{}, ["bin1", "image/png", "abc"]] => [:post, "/catalogs/abc/images", "bin1", { json: false, headers: { "Content-Type" => "image/png" } }],
-      [{ catalog_id: "zxc" }, ["bin1", "image/png"]] => [:post, "/catalogs/zxc/images", "bin1", { json: false, headers: { "Content-Type" => "image/png" } }]
+      [{}, ["bin1", "image/png", "zrn61"]] => [:post, "/catalogs/zrn61/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
+      [{ catalog_id: "zrk6b" }, ["bin1", "image/png"]] => [:post, "/catalogs/zrk6b/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }]
     },
     get_image: {
-      [{}, ["abc", "qwe"]] => [:get, "/catalogs/qwe/images/abc", {}],
-      [{ catalog_id: "zxc" }, ["abc"]] => [:get, "/catalogs/zxc/images/abc", {}],
+      [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61"],
+      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61"],
     },
     get_image_data: {
-      [{}, ["abc", "qwe"]] => [:get, "/catalogs/qwe/images/abc/data", {}],
-      [{ catalog_id: "zxc" }, ["abc"]] => [:get, "/catalogs/zxc/images/abc/data", {}],
+      [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61/data"],
+      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"],
     }
   }.each do |method, examples|
     describe "#{method.upcase}" do
-      examples.each do |(init_args, method_args), api_request_args|
+      examples.each do |(init_args, method_args), (http_method, path, request_data)|
+        init_args = { access_token: "access_token1" }.merge(init_args || {})
+
         context "initialized with #{init_args}" do
           human_args = method_args.map { |arg| arg.is_a?(String) ? arg.to_json : arg }.join(', ')
+          request_data = { headers: { "X-Access-Token" => "access_token1" } }.merge(request_data || {})
 
-          example "##{method}(#{human_args}) queries #{api_request_args}" do
-            client = Hubrise::APIClients::V1.new(nil, nil, { access_token: "access_token1" }.merge(init_args))
+          example "##{method}(#{human_args})   =>   [#{http_method.upcase}] #{path} with #{request_data}" do
+            stub = stub_request(http_method, "https://api.hubrise.com:433/v1" + path).with(request_data).to_return(status: 200, body: '{"key":"val"}')
 
-            api_request_args[3] = { json: true, headers: {} }.merge(api_request_args[3] || {})
-            expect(api_request).to receive(:perform).with(*api_request_args).and_return(:some_response)
+            client = Hubrise::APIClients::V1.new(nil, nil, init_args)
+            api_response = if method_args.any?
+                             client.public_send(method, *method_args)
+                           else
+                             client.public_send(method)
+                           end
 
-            expect(
-              if method_args.any?
-                client.public_send(method, *method_args)
-              else
-                client.public_send(method)
-              end
-            ).to eq(:some_response)
+            expect(stub).to have_been_requested
+            expect(api_response).to have_attributes(
+              code: "200",
+              failed: false,
+              data: { "key" => "val" },
+              error_type: nil,
+              error_message: nil,
+              errors: nil,
+              http_response: an_instance_of(Net::HTTPOK),
+            )
           end
         end
       end 
