@@ -1,6 +1,9 @@
+require "simplecov"
+SimpleCov.start { add_filter "/spec/" }
+
+require "webmock/rspec"
 require "bundler/setup"
 Bundler.require(:default, :test)
-require "webmock/rspec"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
