@@ -1,13 +1,17 @@
 module Hubrise
   class APIResponse
     attr_reader :code, :failed, :data, :error_type, :error_message, :errors, :http_response
-    alias_method :failed?, :failed
+    alias failed? failed
 
     def initialize(http_response)
       @http_response  = http_response
       @code           = http_response.code
 
-      json_body = JSON.parse(http_response.body) rescue nil
+      json_body = begin
+                    JSON.parse(http_response.body)
+                  rescue StandardError
+                    nil
+                  end
 
       @data = json_body || http_response.body
 
@@ -17,15 +21,15 @@ module Hubrise
       else
         @failed  = true
         if json_body
-          @errors         = json_body['errors']
-          @error_type     = json_body['error_type']
-          @error_message  = json_body['message']
+          @errors         = json_body["errors"]
+          @error_type     = json_body["error_type"]
+          @error_message  = json_body["message"]
         end
       end
     end
 
     def retry_after
-      http_response.kind_of?(Net::HTTPTooManyRequests) && http_response['retry-after'].to_i
+      http_response.is_a?(Net::HTTPTooManyRequests) && http_response["retry-after"].to_i
     end
   end
 end

@@ -1,12 +1,13 @@
 require "spec_helper"
 
+# rubocop:disable Metrics/LineLength, Metrics/BlockLength
 describe Hubrise::APIClients::V1 do
-  let(:client)  { Hubrise::APIClients::V1.new(nil, nil, access_token: "access_token1") }
+  let(:client) { Hubrise::APIClients::V1.new(nil, nil, access_token: "access_token1") }
 
   {
     get_account: {
       [{}, ["zrn61"]] => [:get, "/accounts/zrn61"],
-      [{}, []] => [:get, "/account"],
+      [{}, []] => [:get, "/account"]
     },
     get_accounts: {
       [{}, []] => [:get, "/accounts"]
@@ -19,7 +20,7 @@ describe Hubrise::APIClients::V1 do
     },
     get_location: {
       [{}, ["zrn61"]] => [:get, "/locations/zrn61"],
-      [{}, []] => [:get, "/location"],
+      [{}, []] => [:get, "/location"]
     },
     get_orders: {
       [{}, ["zrn61", { status: "new" }]] => [:get, "/locations/zrn61/orders?status=new"]
@@ -28,10 +29,10 @@ describe Hubrise::APIClients::V1 do
       [{}, ["zrn61", "wy3xz"]] => [:get, "/locations/zrn61/orders/wy3xz"]
     },
     create_order: {
-      [{}, ["zrn61", { status: "new" }]] => [:post, "/locations/zrn61/orders", { body: '{"status":"new"}', headers: { "Content-Type" => "application/json" } }]
+      [{}, ["zrn61", { status: "new" }]] => [:post, "/locations/zrn61/orders", { body: { status: "new" }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     update_order: {
-      [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:put, "/locations/zrn61/orders/wy3xz", { body: '{"status":"delivered"}', headers: { "Content-Type" => "application/json" } }]
+      [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:put, "/locations/zrn61/orders/wy3xz", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     get_callback: {
       [{}, []] => [:get, "/callback"]
@@ -43,7 +44,7 @@ describe Hubrise::APIClients::V1 do
       [{}, ["zrn61"]] => [:delete, "/callback/events/zrn61"]
     },
     update_callback: {
-      [{}, [{ 'order' => ['create'] }]] => [:post, "/callback", { body: '{"order":["create"]}', headers: { "Content-Type" => "application/json" } }]
+      [{}, [{ "order" => ["create"] }]] => [:post, "/callback", { body: { order: ["create"] }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     delete_callback: {
       [{}, []] => [:delete, "/callback"]
@@ -71,15 +72,15 @@ describe Hubrise::APIClients::V1 do
       [{}, ["zrk6b", "wy3xz"]] => [:get, "/customer_lists/wy3xz/customers/zrk6b"]
     },
     create_customer: {
-      [{ customer_list_id: "zrn61" }, [{ first_name: "nsave" }]] => [:post, "/customer_lists/zrn61/customers", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }],
-      [{}, [{ first_name: "nsave" }, "wy3xz"]] => [:post, "/customer_lists/wy3xz/customers", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }]
+      [{ customer_list_id: "zrn61" }, [{ first_name: "nsave" }]] => [:post, "/customer_lists/zrn61/customers", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ first_name: "nsave" }, "wy3xz"]] => [:post, "/customer_lists/wy3xz/customers", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     update_customer: {
-      [{ customer_list_id: "zrn61" }, ["zrk6b", { first_name: "nsave" }]] => [:put, "/customer_lists/zrn61/customers/zrk6b", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }],
-      [{}, ["zrk6b", { first_name: "nsave" }, "wy3xz"]] => [:put, "/customer_lists/wy3xz/customers/zrk6b", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }]
+      [{ customer_list_id: "zrn61" }, ["zrk6b", { first_name: "nsave" }]] => [:put, "/customer_lists/zrn61/customers/zrk6b", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["zrk6b", { first_name: "nsave" }, "wy3xz"]] => [:put, "/customer_lists/wy3xz/customers/zrk6b", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     get_location_catalogs: {
-      [{},["zrn61"]] => [:get, "/locations/zrn61/catalogs"]
+      [{}, ["zrn61"]] => [:get, "/locations/zrn61/catalogs"]
     },
     get_account_catalogs: {
       [{}, ["zrn61"]] => [:get, "/accounts/zrn61/catalogs"]
@@ -89,15 +90,15 @@ describe Hubrise::APIClients::V1 do
       [{ catalog_id: "wy3xz" }, []] => [:get, "/catalogs/wy3xz"]
     },
     create_account_catalog: {
-      [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
+      [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     create_location_catalog: {
-      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:post, "/locations/zrn61/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }],
-      [{}, [{ name: "Catalog1" }]] => [:post, "/location/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
+      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:post, "/locations/zrn61/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ name: "Catalog1" }]] => [:post, "/location/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     update_catalog: {
-      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:put, "/catalogs/zrn61", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }],
-      [{ catalog_id: "zrk6b" }, [{ name: "Catalog1" }]] => [:put, "/catalogs/zrk6b", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
+      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:put, "/catalogs/zrn61", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{ catalog_id: "zrk6b" }, [{ name: "Catalog1" }]] => [:put, "/catalogs/zrk6b", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }]
     },
     create_image: {
       [{}, ["bin1", "image/png", "zrn61"]] => [:post, "/catalogs/zrn61/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
@@ -105,23 +106,25 @@ describe Hubrise::APIClients::V1 do
     },
     get_image: {
       [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61"],
-      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61"],
+      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61"]
     },
     get_image_data: {
       [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61/data"],
-      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"],
+      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"]
     }
   }.each do |method, examples|
-    describe "#{method.upcase}" do
+    describe method.upcase do
       examples.each do |(init_args, method_args), (http_method, path, request_data)|
         init_args = { access_token: "access_token1" }.merge(init_args || {})
 
         context "initialized with #{init_args}" do
-          human_args = method_args.map { |arg| arg.is_a?(String) ? arg.to_json : arg }.join(', ')
+          human_args = method_args.map { |arg| arg.is_a?(String) ? arg.to_json : arg }.join(", ")
           request_data = { headers: { "X-Access-Token" => "access_token1" } }.merge(request_data || {})
 
           example "##{method}(#{human_args})   =>   [#{http_method.upcase}] #{path} with #{request_data}" do
-            stub = stub_request(http_method, "https://api.hubrise.com:433/v1" + path).with(request_data).to_return(status: 200, body: '{"key":"val"}')
+            stub = stub_request(http_method, "https://api.hubrise.com:433/v1" + path)
+                   .with(request_data)
+                   .to_return(status: 200, body: { key: "val" }.to_json)
 
             client = Hubrise::APIClients::V1.new(nil, nil, init_args)
             api_response = if method_args.any?
@@ -138,11 +141,11 @@ describe Hubrise::APIClients::V1 do
               error_type: nil,
               error_message: nil,
               errors: nil,
-              http_response: an_instance_of(Net::HTTPOK),
+              http_response: an_instance_of(Net::HTTPOK)
             )
           end
         end
-      end 
+      end
     end
   end
 end

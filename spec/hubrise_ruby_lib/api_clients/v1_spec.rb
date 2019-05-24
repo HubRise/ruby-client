@@ -1,5 +1,6 @@
 require "spec_helper"
 
+# rubocop:disable Metrics/LineLength, Metrics/BlockLength
 describe Hubrise::APIClients::V1 do
   let(:client) { Hubrise::APIClients::V1.new("app_id1", "app_secret1", access_token: "access_token1") }
 
@@ -14,12 +15,12 @@ describe Hubrise::APIClients::V1 do
     subject { client.authorize!("CODE1") }
 
     it "exchanges a code for token" do
-      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").
-        with(
+      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token")
+        .with(
           body: {
-            client_id:      "app_id1",
-            client_secret:  "app_secret1",
-            code:           "CODE1"
+            client_id: "app_id1",
+            client_secret: "app_secret1",
+            code: "CODE1"
           }.to_json
         ).to_return(
           status: 200,
@@ -30,7 +31,7 @@ describe Hubrise::APIClients::V1 do
             account_id: "account_id1",
             location_id: "location_id1",
             catalog_id: "catalog_id1",
-            customer_list_id: "customer_list_id1",
+            customer_list_id: "customer_list_id1"
           }.to_json
         )
 
@@ -42,7 +43,7 @@ describe Hubrise::APIClients::V1 do
         account_id: "account_id1",
         location_id: "location_id1",
         catalog_id: "catalog_id1",
-        customer_list_id: "customer_list_id1",
+        customer_list_id: "customer_list_id1"
       )
     end
 
@@ -61,8 +62,8 @@ describe Hubrise::APIClients::V1 do
     subject { client.send(:call_api, "/some_path") }
 
     it "handles successful response" do
-      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" }).
-        to_return(status: 200, body: { key1: :val1 }.to_json)
+      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+                                                                    .to_return(status: 200, body: { key1: :val1 }.to_json)
 
       expect(subject).to have_attributes(
         code: "200",
@@ -71,13 +72,13 @@ describe Hubrise::APIClients::V1 do
         error_type: nil,
         error_message: nil,
         errors: nil,
-        http_response: an_instance_of(Net::HTTPOK),
+        http_response: an_instance_of(Net::HTTPOK)
       )
     end
 
     it "handles 429 response" do
-      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" }).
-        to_return(status: 429, headers: { "retry-after": 100 })
+      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+                                                                    .to_return(status: 429, headers: { "retry-after": 100 })
 
       expect(subject).to have_attributes(
         code: "429",
@@ -92,8 +93,8 @@ describe Hubrise::APIClients::V1 do
     end
 
     it "handles error response" do
-      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" }).
-        to_return(status: 400, body: { "message"=>"Validation failed", "errors"=>[{ "field"=>"field1", "message"=>"is invalid" }], "error_type"=>"unprocessable_entity" }.to_json)
+      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+                                                                    .to_return(status: 400, body: { "message" => "Validation failed", "errors" => [{ "field" => "field1", "message" => "is invalid" }], "error_type" => "unprocessable_entity" }.to_json)
 
       expect(subject).to have_attributes(
         code: "400",
@@ -102,7 +103,7 @@ describe Hubrise::APIClients::V1 do
         error_type: "unprocessable_entity",
         error_message: "Validation failed",
         errors: [{ "field" => "field1", "message" => "is invalid" }],
-        http_response: an_instance_of(Net::HTTPBadRequest),
+        http_response: an_instance_of(Net::HTTPBadRequest)
       )
     end
   end

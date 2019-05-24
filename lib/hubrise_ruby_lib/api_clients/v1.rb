@@ -1,7 +1,10 @@
+# rubocop:disable Naming/AccessorMethodName
 module Hubrise
   module APIClients
     class V1 < Base
-      def version; :v1; end
+      def version
+        :v1
+      end
 
       # --------------------
       # Accounts, locations, user
@@ -15,22 +18,22 @@ module Hubrise
       end
 
       def get_accounts
-        call_api('/accounts')
+        call_api("/accounts")
       end
 
       def get_user
-        call_api('/user')
+        call_api("/user")
       end
 
       def get_locations
-        call_api('/locations')
+        call_api("/locations")
       end
 
       def get_location(location_id = nil)
         if location_id
           call_api("/locations/#{location_id}")
         else
-          call_api('/location')
+          call_api("/location")
         end
       end
 
@@ -57,11 +60,11 @@ module Hubrise
       # Callback, events
       # --------------------
       def get_callback
-        call_api('/callback')
+        call_api("/callback")
       end
 
       def get_callback_events
-        call_api('/callback/events')
+        call_api("/callback/events")
       end
 
       def delete_event(event_id)
@@ -69,11 +72,11 @@ module Hubrise
       end
 
       def update_callback(params)
-        call_api('/callback', :post, data: params)
+        call_api("/callback", :post, data: params)
       end
 
       def delete_callback
-        call_api('/callback', :delete)
+        call_api("/callback", :delete)
       end
 
       # --------------------
@@ -108,7 +111,8 @@ module Hubrise
       end
 
       def update_customer(customer_id, params, customer_list_id = nil)
-        call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}", :put, data: params)
+        call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}", :put,
+                 data: params)
       end
 
       # --------------------
@@ -145,9 +149,10 @@ module Hubrise
       # --------------------
       # Images
       # --------------------
-
       def create_image(data, mime_type, catalog_id = nil)
-        call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images", :post, data: data, headers: { 'Content-Type' => mime_type }, json: false)
+        call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images", :post, data: data,
+                                                                               headers: { "Content-Type" => mime_type },
+                                                                               json: false)
       end
 
       def get_image(image_id, catalog_id = nil)
@@ -162,13 +167,15 @@ module Hubrise
 
       def customer_list_id_fallback(customer_list_id)
         customer_list_id ||= @customer_list_id
-        raise('customer_list_id required') if customer_list_id.nil? || customer_list_id.empty?
+        raise("customer_list_id required") if customer_list_id.nil? || customer_list_id.empty?
+
         customer_list_id
       end
 
       def catalog_id_fallback(catalog_id)
         catalog_id ||= @catalog_id
-        raise('catalog_id required') if catalog_id.nil? || catalog_id.empty?
+        raise("catalog_id required") if catalog_id.nil? || catalog_id.empty?
+
         catalog_id
       end
     end

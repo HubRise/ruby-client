@@ -1,11 +1,11 @@
 module Hubrise
   class APIRequest
     REQUESTS_HASH = {
-      get:    Net::HTTP::Get,
-      post:   Net::HTTP::Post,
-      put:    Net::HTTP::Put,
+      get: Net::HTTP::Get,
+      post: Net::HTTP::Post,
+      put: Net::HTTP::Put,
       delete: Net::HTTP::Delete
-    }
+    }.freeze
 
     def initialize(hostname:, access_token: nil, use_https: false, logger: nil)
       @hostname     = hostname
@@ -24,43 +24,42 @@ module Hubrise
       when Net::HTTPUnauthorized
         raise InvalidHubriseToken
       else
-        if http_response.code.start_with?('5')
-          raise HubriseError, 'Unexpected error'
-        else
-          APIResponse.new(http_response)
-        end
+        raise(HubriseError, "Unexpected error") if http_response.code.start_with?("5")
+
+        APIResponse.new(http_response)
       end
     rescue Errno::ECONNREFUSED
-      raise HubriseError, 'API is not reachable'
+      raise HubriseError, "API is not reachable"
     end
 
     protected
-      def build_request(uri, method, data, json:, headers:)
-        headers['X-Access-Token'] = @access_token if @access_token
 
-        if method == :get
-          uri = add_params_to_uri(uri, data)
-          data = nil
-        elsif json
-          headers['Content-Type'] ||= 'application/json'
-          data = data.to_json
-        end
+    def build_request(uri, method, data, json:, headers:)
+      headers["X-Access-Token"] = @access_token if @access_token
 
-        REQUESTS_HASH[method].new(uri, headers).tap do |request|
-          request.body = data
-        end
+      if method == :get
+        uri = add_params_to_uri(uri, data)
+        data = nil
+      elsif json
+        headers["Content-Type"] ||= "application/json"
+        data = data.to_json
       end
 
-      def add_params_to_uri(uri, params)
-        uri.query = [uri.query, URI.encode_www_form(params)].compact.join('&')
-        uri
+      REQUESTS_HASH[method].new(uri, headers).tap do |request|
+        request.body = data
       end
+    end
 
-      def perform_request(uri, request)
-        http          = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl  = @use_https
-        http.set_debug_output(@logger) if @logger
-        http.request(request)
-      end
+    def add_params_to_uri(uri, params)
+      uri.query = [uri.query, URI.encode_www_form(params)].compact.join("&")
+      uri
+    end
+
+    def perform_request(uri, request)
+      http          = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl  = @use_https
+      http.set_debug_output(@logger) if @logger
+      http.request(request)
+    end
   end
 end

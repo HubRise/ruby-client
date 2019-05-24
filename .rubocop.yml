@@ -1,0 +1,29 @@
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength: 
+  Max: 20
+
+Metrics/ClassLength:
+  Max: 1500
+
+Metrics/BlockLength:
+  Max: 30
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/WordArray:
+  Enabled: false
+
+Lint/MissingCopEnableDirective:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
