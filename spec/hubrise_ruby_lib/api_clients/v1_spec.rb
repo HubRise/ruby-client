@@ -1,148 +1,109 @@
 require "spec_helper"
 
 describe Hubrise::APIClients::V1 do
-  let(:client)  { Hubrise::APIClients::V1.new(nil, nil, access_token: "access_token1") }
+  let(:client) { Hubrise::APIClients::V1.new("app_id1", "app_secret1", access_token: "access_token1") }
 
-  {
-    get_account: {
-      [{}, ["zrn61"]] => [:get, "/accounts/zrn61"],
-      [{}, []] => [:get, "/account"],
-    },
-    get_accounts: {
-      [{}, []] => [:get, "/accounts"]
-    },
-    get_user: {
-      [{}, []] => [:get, "/user"]
-    },
-    get_locations: {
-      [{}, []] => [:get, "/locations"]
-    },
-    get_location: {
-      [{}, ["zrn61"]] => [:get, "/locations/zrn61"],
-      [{}, []] => [:get, "/location"],
-    },
-    get_orders: {
-      [{}, ["zrn61", { status: "new" }]] => [:get, "/locations/zrn61/orders?status=new"]
-    },
-    get_order: {
-      [{}, ["zrn61", "wy3xz"]] => [:get, "/locations/zrn61/orders/wy3xz"]
-    },
-    create_order: {
-      [{}, ["zrn61", { status: "new" }]] => [:post, "/locations/zrn61/orders", { body: '{"status":"new"}', headers: { "Content-Type" => "application/json" } }]
-    },
-    update_order: {
-      [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:put, "/locations/zrn61/orders/wy3xz", { body: '{"status":"delivered"}', headers: { "Content-Type" => "application/json" } }]
-    },
-    get_callback: {
-      [{}, []] => [:get, "/callback"]
-    },
-    get_callback_events: {
-      [{}, []] => [:get, "/callback/events"]
-    },
-    delete_event: {
-      [{}, ["zrn61"]] => [:delete, "/callback/events/zrn61"]
-    },
-    update_callback: {
-      [{}, [{ 'order' => ['create'] }]] => [:post, "/callback", { body: '{"order":["create"]}', headers: { "Content-Type" => "application/json" } }]
-    },
-    delete_callback: {
-      [{}, []] => [:delete, "/callback"]
-    },
-    get_location_customer_lists: {
-      [{}, ["zrn61"]] => [:get, "/locations/zrn61/customer_lists"]
-    },
-    get_account_customer_lists: {
-      [{}, ["zrn61"]] => [:get, "/accounts/zrn61/customer_lists"]
-    },
-    get_customer_list: {
-      [{}, ["zrn61"]] => [:get, "/customer_lists/zrn61"],
-      [{ customer_list_id: "wy3xz" }, []] => [:get, "/customer_lists/wy3xz"]
-    },
-    get_all_customers: {
-      [{}, ["zrn61"]] => [:get, "/customer_lists/zrn61/customers"],
-      [{ customer_list_id: "wy3xz" }, []] => [:get, "/customer_lists/wy3xz/customers"]
-    },
-    search_customers: {
-      [{ customer_list_id: "zrn61" }, [{ email: "nsave@*" }]] => [:get, "/customer_lists/zrn61/customers?email=nsave@*"],
-      [{}, [{ email: "nsave@*" }, "wy3xz"]] => [:get, "/customer_lists/wy3xz/customers?email=nsave@*"]
-    },
-    get_customer: {
-      [{ customer_list_id: "zrn61" }, ["zrk6b"]] => [:get, "/customer_lists/zrn61/customers/zrk6b"],
-      [{}, ["zrk6b", "wy3xz"]] => [:get, "/customer_lists/wy3xz/customers/zrk6b"]
-    },
-    create_customer: {
-      [{ customer_list_id: "zrn61" }, [{ first_name: "nsave" }]] => [:post, "/customer_lists/zrn61/customers", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }],
-      [{}, [{ first_name: "nsave" }, "wy3xz"]] => [:post, "/customer_lists/wy3xz/customers", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }]
-    },
-    update_customer: {
-      [{ customer_list_id: "zrn61" }, ["zrk6b", { first_name: "nsave" }]] => [:put, "/customer_lists/zrn61/customers/zrk6b", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }],
-      [{}, ["zrk6b", { first_name: "nsave" }, "wy3xz"]] => [:put, "/customer_lists/wy3xz/customers/zrk6b", { body: '{"first_name":"nsave"}', headers: { "Content-Type" => "application/json" } }]
-    },
-    get_location_catalogs: {
-      [{},["zrn61"]] => [:get, "/locations/zrn61/catalogs"]
-    },
-    get_account_catalogs: {
-      [{}, ["zrn61"]] => [:get, "/accounts/zrn61/catalogs"]
-    },
-    get_catalog: {
-      [{}, ["zrn61"]] => [:get, "/catalogs/zrn61"],
-      [{ catalog_id: "wy3xz" }, []] => [:get, "/catalogs/wy3xz"]
-    },
-    create_account_catalog: {
-      [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
-    },
-    create_location_catalog: {
-      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:post, "/locations/zrn61/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }],
-      [{}, [{ name: "Catalog1" }]] => [:post, "/location/catalogs", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
-    },
-    update_catalog: {
-      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:put, "/catalogs/zrn61", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }],
-      [{ catalog_id: "zrk6b" }, [{ name: "Catalog1" }]] => [:put, "/catalogs/zrk6b", { body: '{"name":"Catalog1"}', headers: { "Content-Type" => "application/json" } }]
-    },
-    create_image: {
-      [{}, ["bin1", "image/png", "zrn61"]] => [:post, "/catalogs/zrn61/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
-      [{ catalog_id: "zrk6b" }, ["bin1", "image/png"]] => [:post, "/catalogs/zrk6b/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }]
-    },
-    get_image: {
-      [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61"],
-      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61"],
-    },
-    get_image_data: {
-      [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61/data"],
-      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"],
-    }
-  }.each do |method, examples|
-    describe "#{method.upcase}" do
-      examples.each do |(init_args, method_args), (http_method, path, request_data)|
-        init_args = { access_token: "access_token1" }.merge(init_args || {})
+  describe "#build_authorization_url" do
+    it "builds proper url" do
+      url = client.build_authorization_url("redirect_uri.com", "profile", key1: :val1)
+      expect(url).to eq("https://manager.hubrise.com:433/oauth2/v1/authorize?key1=val1&redirect_uri=redirect_uri.com&scope=profile&client_id=app_id1")
+    end
+  end
 
-        context "initialized with #{init_args}" do
-          human_args = method_args.map { |arg| arg.is_a?(String) ? arg.to_json : arg }.join(', ')
-          request_data = { headers: { "X-Access-Token" => "access_token1" } }.merge(request_data || {})
+  describe "#authorize!" do
+    subject { client.authorize!("CODE1") }
 
-          example "##{method}(#{human_args})   =>   [#{http_method.upcase}] #{path} with #{request_data}" do
-            stub = stub_request(http_method, "https://api.hubrise.com:433/v1" + path).with(request_data).to_return(status: 200, body: '{"key":"val"}')
+    it "exchanges a code for token" do
+      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").
+        with(
+          body: {
+            client_id:      "app_id1",
+            client_secret:  "app_secret1",
+            code:           "CODE1"
+          }.to_json
+        ).to_return(
+          status: 200,
+          body: {
+            access_token: "access_token1",
+            app_instance_id: "app_instance_id1",
+            user_id: "user_id1",
+            account_id: "account_id1",
+            location_id: "location_id1",
+            catalog_id: "catalog_id1",
+            customer_list_id: "customer_list_id1",
+          }.to_json
+        )
 
-            client = Hubrise::APIClients::V1.new(nil, nil, init_args)
-            api_response = if method_args.any?
-                             client.public_send(method, *method_args)
-                           else
-                             client.public_send(method)
-                           end
+      subject
+      expect(client).to have_attributes(
+        access_token: "access_token1",
+        app_instance_id: "app_instance_id1",
+        user_id: "user_id1",
+        account_id: "account_id1",
+        location_id: "location_id1",
+        catalog_id: "catalog_id1",
+        customer_list_id: "customer_list_id1",
+      )
+    end
 
-            expect(stub).to have_been_requested
-            expect(api_response).to have_attributes(
-              code: "200",
-              failed: false,
-              data: { "key" => "val" },
-              error_type: nil,
-              error_message: nil,
-              errors: nil,
-              http_response: an_instance_of(Net::HTTPOK),
-            )
-          end
-        end
-      end 
+    it "raises InvalidHubriseGrantParams for wrong code" do
+      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").to_return(status: 404)
+      expect { subject }.to raise_error(Hubrise::InvalidHubriseGrantParams)
+    end
+
+    it "raises generic error for unexpected response" do
+      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").to_return(status: 500)
+      expect { subject }.to raise_error(Hubrise::HubriseError)
+    end
+  end
+
+  describe "call_api" do
+    subject { client.send(:call_api, "/some_path") }
+
+    it "handles successful response" do
+      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" }).
+        to_return(status: 200, body: { key1: :val1 }.to_json)
+
+      expect(subject).to have_attributes(
+        code: "200",
+        failed: false,
+        data: { "key1" => "val1" },
+        error_type: nil,
+        error_message: nil,
+        errors: nil,
+        http_response: an_instance_of(Net::HTTPOK),
+      )
+    end
+
+    it "handles 429 response" do
+      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" }).
+        to_return(status: 429, headers: { "retry-after": 100 })
+
+      expect(subject).to have_attributes(
+        code: "429",
+        failed: true,
+        data: "",
+        error_type: nil,
+        error_message: nil,
+        errors: nil,
+        http_response: an_instance_of(Net::HTTPTooManyRequests),
+        retry_after: 100
+      )
+    end
+
+    it "handles error response" do
+      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" }).
+        to_return(status: 400, body: { "message"=>"Validation failed", "errors"=>[{ "field"=>"field1", "message"=>"is invalid" }], "error_type"=>"unprocessable_entity" }.to_json)
+
+      expect(subject).to have_attributes(
+        code: "400",
+        failed: true,
+        data: { "message" => "Validation failed", "errors" => [{ "field" => "field1", "message" => "is invalid" }], "error_type" => "unprocessable_entity" },
+        error_type: "unprocessable_entity",
+        error_message: "Validation failed",
+        errors: [{ "field" => "field1", "message" => "is invalid" }],
+        http_response: an_instance_of(Net::HTTPBadRequest),
+      )
     end
   end
 end

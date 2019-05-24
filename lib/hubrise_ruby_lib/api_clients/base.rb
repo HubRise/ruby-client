@@ -41,7 +41,7 @@ module Hubrise
           client_id:     @app_id
         )
 
-        oauth2_hubrise_hostname_with_version + '/authorize?' + URI.encode_www_form(params)
+        (@use_https ? "https" : "http") + "://" + oauth2_hubrise_hostname_with_version + '/authorize?' + URI.encode_www_form(params)
       end
 
       def authorize!(authorization_code)
@@ -52,9 +52,9 @@ module Hubrise
         })
 
         case api_response.code
-        when HTTP::Status::OK
+        when "200"
           initialize_scope_params(api_response.data)
-        when HTTP::Status::NOT_FOUND
+        when "404"
           raise InvalidHubriseGrantParams
         else
           raise HubriseError, "Unexpected error: #{api_response.http_response.inspect}"
