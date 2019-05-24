@@ -1,3 +1,3 @@
 module HubriseRubyLib
-  VERSION = "0.0.20".freeze
+  VERSION = "1.0.0".freeze
 end
