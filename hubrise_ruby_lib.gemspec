@@ -4,14 +4,14 @@ require "hubrise_ruby_lib/version"
 Gem::Specification.new do |s|
   s.name        = "hubrise_ruby_lib"
   s.version     = HubriseRubyLib::VERSION
-  s.licenses    = ['MIT']
-  s.date        = "2016-10-04"
-  s.homepage    = 'https://github.com/HubRise/ruby-lib'
-  s.summary     = "Hubrise Ruby client"
   s.authors     = [
-    "Antoine Monnier",
-    "Nick Save"
+      "Antoine Monnier",
+      "Nick Save"
   ]
+  s.homepage    = 'https://github.com/HubRise/ruby-lib'
+  s.summary     = 'Hubrise Ruby client'
+  s.license     = 'MIT'
+
   s.files = [
     "lib/hubrise_ruby_lib.rb",
     "lib/hubrise_ruby_lib/api_response.rb",
