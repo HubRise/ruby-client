@@ -113,25 +113,31 @@ describe Hubrise::APIClients::V1 do
       [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"]
     }
   }.each do |method, examples|
-    describe method.upcase do
+    describe "### #{method.upcase}" do
       examples.each do |(init_args, method_args), (http_method, path, request_data)|
         init_args = { access_token: "access_token1" }.merge(init_args || {})
 
-        context "initialized with #{init_args}" do
-          human_args = method_args.map { |arg| arg.is_a?(String) ? arg.to_json : arg }.join(", ")
-          request_data = { headers: { "X-Access-Token" => "access_token1" } }.merge(request_data || {})
+        human_args = method_args.map { |arg| arg.is_a?(String) ? arg.to_json : arg }.join(", ")
+        request_data = { headers: { "X-Access-Token" => "access_token1" } }.merge(request_data || {})
+        code_example = [
+          "```",
+          "Hubrise::APIClients::V1.new(client_attrs).#{method}(#{human_args})",
+          "// => [#{http_method.upcase}] #{path} with #{request_data}",
+          "```"
+        ].join("\n      ")
 
-          example "##{method}(#{human_args})   =>   [#{http_method.upcase}] #{path} with #{request_data}" do
+        context "- Initialized with `client_attrs = #{init_args}`" do
+          example code_example do
             stub = stub_request(http_method, "https://api.hubrise.com:433/v1" + path)
-                   .with(request_data)
-                   .to_return(status: 200, body: { key: "val" }.to_json)
+                    .with(request_data)
+                    .to_return(status: 200, body: { key: "val" }.to_json)
 
             client = Hubrise::APIClients::V1.new(nil, nil, init_args)
             api_response = if method_args.any?
-                             client.public_send(method, *method_args)
-                           else
-                             client.public_send(method)
-                           end
+                              client.public_send(method, *method_args)
+                            else
+                              client.public_send(method)
+                            end
 
             expect(stub).to have_been_requested
             expect(api_response).to have_attributes(
