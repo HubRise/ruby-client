@@ -4,9 +4,10 @@ require "hubrise_ruby_lib/version"
 Gem::Specification.new do |s|
   s.name        = "hubrise_ruby_lib"
   s.version     = HubriseRubyLib::VERSION
-  s.date        = "2015-06-03"
-  s.summary     = "Hubrise API helper"
-  s.description = "Hubrise API helper ruby library"
+  s.licenses    = ['MIT']
+  s.date        = "2016-10-04"
+  s.homepage    = 'https://github.com/HubRise/ruby-lib'
+  s.summary     = "Hubrise Ruby client"
   s.authors     = [
     "Antoine Monnier",
     "Nick Save"
