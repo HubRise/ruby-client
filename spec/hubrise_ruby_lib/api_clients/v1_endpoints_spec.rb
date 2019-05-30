@@ -129,15 +129,15 @@ describe Hubrise::APIClients::V1 do
         context "- Initialized with `client_attrs = #{init_args}`" do
           example code_example do
             stub = stub_request(http_method, "https://api.hubrise.com:433/v1" + path)
-                    .with(request_data)
-                    .to_return(status: 200, body: { key: "val" }.to_json)
+                   .with(request_data)
+                   .to_return(status: 200, body: { key: "val" }.to_json)
 
             client = Hubrise::APIClients::V1.new(nil, nil, init_args)
             api_response = if method_args.any?
-                              client.public_send(method, *method_args)
-                            else
-                              client.public_send(method)
-                            end
+                             client.public_send(method, *method_args)
+                           else
+                             client.public_send(method)
+                           end
 
             expect(stub).to have_been_requested
             expect(api_response).to have_attributes(
