@@ -1,8 +1,8 @@
 require "spec_helper"
 
 # rubocop:disable Metrics/LineLength, Metrics/BlockLength
-describe Hubrise::APIClients::V1 do
-  let(:client) { Hubrise::APIClients::V1.new("app_id1", "app_secret1", access_token: "access_token1") }
+describe HubriseClient::V1 do
+  let(:client) { HubriseClient::V1.new("app_id1", "app_secret1", access_token: "access_token1") }
 
   describe "#build_authorization_url" do
     it "builds proper url" do
@@ -49,12 +49,12 @@ describe Hubrise::APIClients::V1 do
 
     it "raises InvalidHubriseGrantParams for wrong code" do
       stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").to_return(status: 404)
-      expect { subject }.to raise_error(Hubrise::InvalidHubriseGrantParams)
+      expect { subject }.to raise_error(HubriseClient::InvalidHubriseGrantParams)
     end
 
     it "raises generic error for unexpected response" do
       stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").to_return(status: 500)
-      expect { subject }.to raise_error(Hubrise::HubriseError)
+      expect { subject }.to raise_error(HubriseClient::HubriseError)
     end
   end
 

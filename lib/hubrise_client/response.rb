@@ -1,5 +1,5 @@
-module Hubrise
-  class APIResponse
+module HubriseClient
+  class Response
     attr_reader :code, :failed, :data, :error_type, :error_message, :errors, :http_response
     alias failed? failed
 

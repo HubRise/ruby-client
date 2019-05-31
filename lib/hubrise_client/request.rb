@@ -1,5 +1,5 @@
-module Hubrise
-  class APIRequest
+module HubriseClient
+  class Request
     REQUESTS_HASH = {
       get: Net::HTTP::Get,
       post: Net::HTTP::Post,
@@ -26,7 +26,7 @@ module Hubrise
       else
         raise(HubriseError, "Unexpected error") if http_response.code.start_with?("5")
 
-        APIResponse.new(http_response)
+        Response.new(http_response)
       end
     rescue Errno::ECONNREFUSED
       raise HubriseError, "API is not reachable"

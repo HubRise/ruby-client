@@ -1,8 +1,8 @@
 require "spec_helper"
 
 # rubocop:disable Metrics/LineLength, Metrics/BlockLength
-describe Hubrise::APIClients::V1 do
-  let(:client) { Hubrise::APIClients::V1.new(nil, nil, access_token: "access_token1") }
+describe HubriseClient::V1 do
+  let(:client) { HubriseClient::V1.new(nil, nil, access_token: "access_token1") }
 
   {
     get_account: {
@@ -121,7 +121,7 @@ describe Hubrise::APIClients::V1 do
         request_data = { headers: { "X-Access-Token" => "access_token1" } }.merge(request_data || {})
         code_example = [
           "```",
-          "Hubrise::APIClients::V1.new(client_attrs).#{method}(#{human_args})",
+          "HubriseClient::V1.new(client_attrs).#{method}(#{human_args})",
           "// => [#{http_method.upcase}] #{path} with #{request_data}",
           "```"
         ].join("\n      ")
@@ -132,7 +132,7 @@ describe Hubrise::APIClients::V1 do
                    .with(request_data)
                    .to_return(status: 200, body: { key: "val" }.to_json)
 
-            client = Hubrise::APIClients::V1.new(nil, nil, init_args)
+            client = HubriseClient::V1.new(nil, nil, init_args)
             api_response = if method_args.any?
                              client.public_send(method, *method_args)
                            else
