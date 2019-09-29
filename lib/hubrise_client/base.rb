@@ -2,9 +2,9 @@ module HubriseClient
   class Base
     USE_HTTPS           = true
     DEFAULT_API_HOST    = "api.hubrise.com".freeze
-    DEFAULT_API_PORT    = "433".freeze
+    DEFAULT_API_PORT    = "443".freeze
     DEFAULT_OAUTH_HOST  = "manager.hubrise.com".freeze
-    DEFAULT_OAUTH_PORT  = "433".freeze
+    DEFAULT_OAUTH_PORT  = "443".freeze
 
     attr_accessor :access_token,
                   :app_instance_id,
