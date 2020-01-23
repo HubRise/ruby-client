@@ -1,4 +1,4 @@
-# hubrise_ruby_lib
+# hubrise_client
 
 To upload the latest version to RubyGems.org:
 
