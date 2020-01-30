@@ -128,7 +128,7 @@ describe HubriseClient::V1 do
 
         context "- Initialized with `client_attrs = #{init_args}`" do
           example code_example do
-            stub = stub_request(http_method, "https://api.hubrise.com:433/v1" + path)
+            stub = stub_request(http_method, "https://api.hubrise.com/v1" + path)
                    .with(request_data)
                    .to_return(status: 200, body: { key: "val" }.to_json)
 

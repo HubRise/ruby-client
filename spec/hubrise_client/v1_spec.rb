@@ -7,7 +7,7 @@ describe HubriseClient::V1 do
   describe "#build_authorization_url" do
     it "builds proper url" do
       url = client.build_authorization_url("redirect_uri.com", "profile", key1: :val1)
-      expect(url).to eq("https://manager.hubrise.com:433/oauth2/v1/authorize?key1=val1&redirect_uri=redirect_uri.com&scope=profile&client_id=app_id1")
+      expect(url).to eq("https://manager.hubrise.com:443/oauth2/v1/authorize?key1=val1&redirect_uri=redirect_uri.com&scope=profile&client_id=app_id1")
     end
   end
 
@@ -15,7 +15,7 @@ describe HubriseClient::V1 do
     subject { client.authorize!("CODE1") }
 
     it "exchanges a code for token" do
-      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token")
+      stub_request(:post, "https://manager.hubrise.com/oauth2/v1/token")
         .with(
           body: {
             client_id: "app_id1",
@@ -48,12 +48,12 @@ describe HubriseClient::V1 do
     end
 
     it "raises InvalidHubriseGrantParams for wrong code" do
-      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").to_return(status: 404)
+      stub_request(:post, "https://manager.hubrise.com/oauth2/v1/token").to_return(status: 404)
       expect { subject }.to raise_error(HubriseClient::InvalidHubriseGrantParams)
     end
 
     it "raises generic error for unexpected response" do
-      stub_request(:post, "https://manager.hubrise.com:433/oauth2/v1/token").to_return(status: 500)
+      stub_request(:post, "https://manager.hubrise.com/oauth2/v1/token").to_return(status: 500)
       expect { subject }.to raise_error(HubriseClient::HubriseError)
     end
   end
@@ -62,7 +62,7 @@ describe HubriseClient::V1 do
     subject { client.send(:call_api, "/some_path") }
 
     it "handles successful response" do
-      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+      stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
                                                                     .to_return(status: 200, body: { key1: :val1 }.to_json)
 
       expect(subject).to have_attributes(
@@ -77,7 +77,7 @@ describe HubriseClient::V1 do
     end
 
     it "handles 429 response" do
-      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+      stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
                                                                     .to_return(status: 429, headers: { "retry-after": 100 })
 
       expect(subject).to have_attributes(
@@ -93,7 +93,7 @@ describe HubriseClient::V1 do
     end
 
     it "handles error response" do
-      stub_request(:get, "https://api.hubrise.com:433/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+      stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
                                                                     .to_return(status: 400, body: { "message" => "Validation failed", "errors" => [{ "field" => "field1", "message" => "is invalid" }], "error_type" => "unprocessable_entity" }.to_json)
 
       expect(subject).to have_attributes(
