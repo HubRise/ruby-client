@@ -38,7 +38,10 @@ module HubriseClient
       headers["X-Access-Token"] = @access_token if @access_token
 
       if method == :get
+        if data && data.count > 0
         uri = add_params_to_uri(uri, data)
+        end
+
         data = nil
       elsif json
         headers["Content-Type"] ||= "application/json"
