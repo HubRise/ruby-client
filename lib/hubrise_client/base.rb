@@ -13,7 +13,8 @@ module HubriseClient
                   :location_id,
                   :catalog_id,
                   :customer_list_id,
-                  :logger
+                  :logger,
+                  :request_callback
 
     def initialize(app_id, app_secret, params = {}) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
       @app_id     = app_id
@@ -23,6 +24,7 @@ module HubriseClient
       @oauth_host = params[:oauth_host] || DEFAULT_OAUTH_HOST
       @oauth_port = params[:oauth_port] || DEFAULT_OAUTH_PORT
       @use_https  = !!params.fetch(:use_https, USE_HTTPS)
+      @request_callback = params[:request_callback]
 
       initialize_scope_params(params)
 
@@ -77,7 +79,8 @@ module HubriseClient
       raise(HubriseAccessTokenMissing) if @access_token.nil?
 
       api_request("#{@api_host}:#{@api_port}/#{version}", @access_token).perform(method, path, data, json: json,
-                                                                                                      headers: headers)
+                                                                                                     headers: headers,
+                                                                                                     &@request_callback)
     end
 
     def api_request(hostname, access_token = nil)

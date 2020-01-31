@@ -106,5 +106,25 @@ describe HubriseClient::V1 do
         http_response: an_instance_of(Net::HTTPBadRequest)
       )
     end
+
+    context "with callback" do
+      before do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+                                                                  .to_return(status: 200, body: { key1: :val1 }.to_json)
+      end
+
+      it "calls callback with request and response" do
+        called = false
+        client.request_callback = ->(request, response) do
+          called = true
+          expect(request.uri.to_s).to eq("https://api.hubrise.com/v1/some_path")
+          expect(response.body).to eq({ key1: :val1 }.to_json)
+        end
+
+        subject
+
+        expect(called).to be_truthy
+      end
+    end
   end
 end

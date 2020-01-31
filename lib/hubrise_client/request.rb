@@ -15,7 +15,7 @@ module HubriseClient
       @logger       = logger
     end
 
-    def perform(method, path, data, json: true, headers: {})
+    def perform(method, path, data, json: true, headers: {}, callback: nil)
       uri           = URI.parse(@protocol + "://" + @hostname + path)
       http_request  = build_request(uri, method, data, json: json, headers: headers)
       http_response = perform_request(uri, http_request)
@@ -30,6 +30,8 @@ module HubriseClient
       end
     rescue Errno::ECONNREFUSED
       raise HubriseError, "API is not reachable"
+    ensure
+      yield(http_request, http_response) if http_request && block_given?
     end
 
     protected
@@ -39,7 +41,7 @@ module HubriseClient
 
       if method == :get
         if data && data.count > 0
-        uri = add_params_to_uri(uri, data)
+          uri = add_params_to_uri(uri, data)
         end
 
         data = nil
