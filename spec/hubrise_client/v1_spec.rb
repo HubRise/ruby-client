@@ -107,21 +107,40 @@ describe HubriseClient::V1 do
       )
     end
 
-    context "with callback" do
-      before do
-        stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
-                                                                  .to_return(status: 200, body: { key1: :val1 }.to_json)
-      end
+    it "raises for 401" do
+      stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
+                                                                .to_return(status: 401)
 
-      it "calls callback with request and response" do
+      expect{ subject }.to raise_error(HubriseClient::InvalidHubriseToken)
+    end
+
+    context "with callback" do
+      it "calls callback for success" do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path").to_return(status: 200, body: { key1: :val1 }.to_json)
+
         called = false
         client.request_callback = ->(request, response) do
           called = true
-          expect(request.uri.to_s).to eq("https://api.hubrise.com/v1/some_path")
-          expect(response.body).to eq({ key1: :val1 }.to_json)
+          expect(request.http_request.uri.to_s).to eq("https://api.hubrise.com/v1/some_path")
+          expect(response.http_response.body).to eq({ key1: :val1 }.to_json)
         end
 
         subject
+
+        expect(called).to be_truthy
+      end
+
+      it "calls callback wihtout response for network error" do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path").to_raise(Errno::ECONNREFUSED)
+
+        called = false
+        client.request_callback = ->(request, response) do
+          called = true
+          expect(request.http_request.uri.to_s).to eq("https://api.hubrise.com/v1/some_path")
+          expect(response).to be_nil
+        end
+
+        expect { subject }.to raise_error(HubriseClient::HubriseError)
 
         expect(called).to be_truthy
       end

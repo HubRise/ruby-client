@@ -7,6 +7,7 @@ module HubriseClient
       delete: Net::HTTP::Delete
     }.freeze
 
+    attr_reader :http_request
     def initialize(hostname:, access_token: nil, use_https: false, logger: nil)
       @hostname     = hostname
       @access_token = access_token
@@ -15,23 +16,26 @@ module HubriseClient
       @logger       = logger
     end
 
-    def perform(method, path, data, json: true, headers: {}, callback: nil)
+    def perform(method, path, data, json: true, headers: {})
       uri           = URI.parse(@protocol + "://" + @hostname + path)
-      http_request  = build_request(uri, method, data, json: json, headers: headers)
-      http_response = perform_request(uri, http_request)
+      @http_request  = build_request(uri, method, data, json: json, headers: headers)
+      @http_response = perform_request(uri, @http_request)
+      @response = Response.new(@http_response)
 
-      case http_response
+      case @http_response
       when Net::HTTPUnauthorized
         raise InvalidHubriseToken
       else
-        raise(HubriseError, "Unexpected error") if http_response.code.start_with?("5")
-
-        Response.new(http_response)
+        if @http_response.code.start_with?("5")
+          raise(HubriseError, "Unexpected error")
+        else
+          @response
+        end
       end
     rescue Errno::ECONNREFUSED
       raise HubriseError, "API is not reachable"
     ensure
-      yield(http_request, http_response) if http_request && block_given?
+      yield(self, @response) if @http_request && block_given?
     end
 
     protected

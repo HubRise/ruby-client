@@ -9,7 +9,7 @@ module HubriseClient
 
       json_body = begin
                     JSON.parse(http_response.body)
-                  rescue StandardError
+                  rescue JSON::ParserError
                     nil
                   end
 
