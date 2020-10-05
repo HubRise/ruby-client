@@ -111,7 +111,7 @@ module HubriseClient
 
     def update_customer(customer_id, params, customer_list_id = nil)
       call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/customers/#{customer_id}", :put,
-                data: params)
+               data: params)
     end
 
     # --------------------
@@ -150,8 +150,8 @@ module HubriseClient
     # --------------------
     def create_image(data, mime_type, catalog_id = nil)
       call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images", :post, data: data,
-                                                                              headers: { "Content-Type" => mime_type },
-                                                                              json: false)
+                                                                             headers: { "Content-Type" => mime_type },
+                                                                             json: false)
     end
 
     def get_image(image_id, catalog_id = nil)
@@ -170,7 +170,11 @@ module HubriseClient
     end
 
     def create_loyalty_operation(loyalty_card_id, params, customer_list_id = nil)
-      call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/loyalty_cards/#{loyalty_card_id}/operations", :post, data: params)
+      call_api(
+        "/customer_lists/#{customer_list_id_fallback(customer_list_id)}/loyalty_cards/#{loyalty_card_id}/operations",
+        :post,
+        data: params
+      )
     end
 
     private

@@ -118,7 +118,7 @@ describe HubriseClient::V1 do
     },
     create_loyalty_operation: {
       [{ customer_list_id: "zrn61" }, ["wy3xz", { delta: "4.2" }]] => [:post, "/customer_lists/zrn61/loyalty_cards/wy3xz/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
-      [{}, ["wy3xz", { delta: "4.2" }, "zrn61"]] => [:post, "/customer_lists/zrn61/loyalty_cards/wy3xz/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["wy3xz", { delta: "4.2" }, "zrn61"]] => [:post, "/customer_lists/zrn61/loyalty_cards/wy3xz/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }]
     }
   }.each do |method, examples|
     describe "### #{method.upcase}" do

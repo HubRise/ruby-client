@@ -17,9 +17,9 @@ module HubriseClient
 
       case http_response
       when Net::HTTPSuccess
-        @failed  = false
+        @failed = false
       else
-        @failed  = true
+        @failed = true
         if json_body
           @errors         = json_body["errors"]
           @error_type     = json_body["error_type"]

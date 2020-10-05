@@ -17,8 +17,8 @@ module HubriseClient
     end
 
     def perform(method, path, data, json: true, headers: {})
-      uri           = URI.parse(@protocol + "://" + @hostname + path)
-      @http_request  = build_request(uri, method, data, json: json, headers: headers)
+      uri = URI.parse(@protocol + "://" + @hostname + path)
+      @http_request = build_request(uri, method, data, json: json, headers: headers)
       @http_response = perform_request(uri, @http_request)
       @response = Response.new(@http_response)
 
@@ -26,11 +26,9 @@ module HubriseClient
       when Net::HTTPUnauthorized
         raise InvalidHubriseToken
       else
-        if @http_response.code.start_with?("5")
-          raise(HubriseError, "Unexpected error")
-        else
-          @response
-        end
+        raise(HubriseError, "Unexpected error") if @http_response.code.start_with?("5")
+
+        @response
       end
     rescue Errno::ECONNREFUSED
       raise HubriseError, "API is not reachable"
@@ -44,9 +42,7 @@ module HubriseClient
       headers["X-Access-Token"] = @access_token if @access_token
 
       if method == :get
-        if data && data.count > 0
-          uri = add_params_to_uri(uri, data)
-        end
+        uri = add_params_to_uri(uri, data) if data&.count&.positive?
 
         data = nil
       elsif json

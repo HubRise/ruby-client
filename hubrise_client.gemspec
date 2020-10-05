@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
     "Antoine Monnier",
     "Nick Save"
   ]
-  s.homepage    = 'https://github.com/HubRise/ruby-client'
-  s.summary     = 'HubRise Ruby client'
-  s.license     = 'MIT'
+  s.homepage    = "https://github.com/HubRise/ruby-client"
+  s.summary     = "HubRise Ruby client"
+  s.license     = "MIT"
 
   s.files = Dir["lib/**/*", "LICENSE", "Rakefile", "README.md", "V1_ENDPOINTS.md"]
 

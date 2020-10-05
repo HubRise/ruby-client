@@ -47,9 +47,9 @@ module HubriseClient
 
     def authorize!(authorization_code)
       api_response = api_request(oauth2_hubrise_hostname_with_version).perform(:post, "/token",
-                                                                                client_id: @app_id,
-                                                                                client_secret: @app_secret,
-                                                                                code: authorization_code)
+                                                                               client_id: @app_id,
+                                                                               client_secret: @app_secret,
+                                                                               code: authorization_code)
 
       case api_response.code
       when "200"
@@ -65,7 +65,7 @@ module HubriseClient
 
     protected
 
-    def initialize_scope_params(params) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/LineLength
+    def initialize_scope_params(params) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
       @access_token     = params[:access_token] || params["access_token"]
       @app_instance_id  = params[:app_instance_id] || params["app_instance_id"]
       @user_id          = params[:user_id] || params["user_id"]
@@ -78,9 +78,13 @@ module HubriseClient
     def call_api(path, method = :get, data: {}, headers: {}, json: true)
       raise(HubriseAccessTokenMissing) if @access_token.nil?
 
-      api_request("#{@api_host}:#{@api_port}/#{version}", @access_token).perform(method, path, data, json: json,
-                                                                                                     headers: headers,
-                                                                                                     &@request_callback)
+      api_request("#{@api_host}:#{@api_port}/#{version}", @access_token)
+        .perform(method,
+                 path,
+                 data,
+                 json: json,
+                 headers: headers,
+                 &@request_callback)
     end
 
     def api_request(hostname, access_token = nil)
