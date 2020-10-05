@@ -162,6 +162,17 @@ module HubriseClient
       call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images/#{image_id}/data")
     end
 
+    # --------------------
+    # Loyalty cards
+    # --------------------
+    def create_loyalty_card(params, customer_list_id = nil)
+      call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/loyalty_cards", :post, data: params)
+    end
+
+    def create_loyalty_operation(loyalty_card_id, params, customer_list_id = nil)
+      call_api("/customer_lists/#{customer_list_id_fallback(customer_list_id)}/loyalty_cards/#{loyalty_card_id}/operations", :post, data: params)
+    end
+
     private
 
     def customer_list_id_fallback(customer_list_id)
