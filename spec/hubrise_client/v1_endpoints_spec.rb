@@ -111,6 +111,14 @@ describe HubriseClient::V1 do
     get_image_data: {
       [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61/data"],
       [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"]
+    },
+    create_loyalty_card: {
+      [{ customer_list_id: "zrn61" }, [{ name: "LC1" }]] => [:post, "/customer_lists/zrn61/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ name: "LC1" }, "zrn61"]] => [:post, "/customer_lists/zrn61/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }]
+    },
+    create_loyalty_operation: {
+      [{ customer_list_id: "zrn61" }, ["wy3xz", { delta: "4.2" }]] => [:post, "/customer_lists/zrn61/loyalty_cards/wy3xz/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["wy3xz", { delta: "4.2" }, "zrn61"]] => [:post, "/customer_lists/zrn61/loyalty_cards/wy3xz/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
     }
   }.each do |method, examples|
     describe "### #{method.upcase}" do
