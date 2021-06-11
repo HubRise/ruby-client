@@ -1,4 +1,4 @@
-This gem is a thin wrapper for [Hubrise API](https://www.hubrise.com/developers)
+This gem is a Ruby SDK for [Hubrise API](https://www.hubrise.com/developers). It is maintained by the HubRise development team.
 
 # Installation
 
