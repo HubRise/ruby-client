@@ -92,7 +92,7 @@ module HubriseClient
         hostname: hostname,
         access_token: access_token,
         use_https: @use_https,
-        logger: @logger
+        logger: @verbous && @logger
       )
     end
 
