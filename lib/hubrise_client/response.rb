@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 module HubriseClient
   class Response
     attr_reader :code, :failed, :data, :error_type, :error_message, :errors, :http_response
-    alias failed? failed
+    alias_method :failed?, :failed
 
     def initialize(http_response)
       @http_response  = http_response

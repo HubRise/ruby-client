@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 module HubriseClient
   class Base
     USE_HTTPS           = true
-    DEFAULT_API_HOST    = "api.hubrise.com".freeze
-    DEFAULT_API_PORT    = "443".freeze
-    DEFAULT_OAUTH_HOST  = "manager.hubrise.com".freeze
-    DEFAULT_OAUTH_PORT  = "443".freeze
+    DEFAULT_API_HOST    = "api.hubrise.com"
+    DEFAULT_API_PORT    = "443"
+    DEFAULT_OAUTH_HOST  = "manager.hubrise.com"
+    DEFAULT_OAUTH_PORT  = "443"
 
     attr_accessor :access_token,
                   :app_instance_id,
@@ -16,7 +17,7 @@ module HubriseClient
                   :logger,
                   :request_callback
 
-    def initialize(app_id, app_secret, params = {}) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+    def initialize(app_id, app_secret, params = {})
       @app_id     = app_id
       @app_secret = app_secret
       @api_host   = params[:api_host] || DEFAULT_API_HOST
@@ -29,7 +30,7 @@ module HubriseClient
       initialize_scope_params(params)
 
       @verbous = !!params[:verbous]
-      unless (@logger = params[:logger]) # rubocop:disable Style/GuardClause
+      unless (@logger = params[:logger])
         @logger = Logger.new(STDOUT)
         @logger.level = @verbous ? Logger::DEBUG : Logger::WARN
       end
@@ -65,7 +66,7 @@ module HubriseClient
 
     protected
 
-    def initialize_scope_params(params) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
+    def initialize_scope_params(params)
       @access_token     = params[:access_token] || params["access_token"]
       @app_instance_id  = params[:app_instance_id] || params["app_instance_id"]
       @user_id          = params[:user_id] || params["user_id"]
