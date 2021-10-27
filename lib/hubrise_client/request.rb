@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 module HubriseClient
   class Request
     REQUESTS_HASH = {
       get: Net::HTTP::Get,
       post: Net::HTTP::Post,
       put: Net::HTTP::Put,
-      delete: Net::HTTP::Delete
+      delete: Net::HTTP::Delete,
     }.freeze
 
     attr_reader :http_request

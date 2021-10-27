@@ -1,6 +1,5 @@
+# frozen_string_literal: true
 require "spec_helper"
-
-# rubocop:disable Metrics/LineLength, Metrics/BlockLength
 describe HubriseClient::V1 do
   let(:client) { HubriseClient::V1.new("app_id1", "app_secret1", access_token: "access_token1") }
 
@@ -20,7 +19,7 @@ describe HubriseClient::V1 do
           body: {
             client_id: "app_id1",
             client_secret: "app_secret1",
-            code: "CODE1"
+            code: "CODE1",
           }.to_json
         ).to_return(
           status: 200,
@@ -31,7 +30,7 @@ describe HubriseClient::V1 do
             account_id: "account_id1",
             location_id: "location_id1",
             catalog_id: "catalog_id1",
-            customer_list_id: "customer_list_id1"
+            customer_list_id: "customer_list_id1",
           }.to_json
         )
 
@@ -63,7 +62,7 @@ describe HubriseClient::V1 do
 
     it "handles successful response" do
       stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
-                                                                .to_return(status: 200, body: { key1: :val1 }.to_json)
+        .to_return(status: 200, body: { key1: :val1 }.to_json)
 
       expect(subject).to have_attributes(
         code: "200",
@@ -78,7 +77,7 @@ describe HubriseClient::V1 do
 
     it "handles 429 response" do
       stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
-                                                                .to_return(status: 429, headers: { "retry-after": 100 })
+        .to_return(status: 429, headers: { "retry-after": 100 })
 
       expect(subject).to have_attributes(
         code: "429",
@@ -94,7 +93,7 @@ describe HubriseClient::V1 do
 
     it "handles error response" do
       stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
-                                                                .to_return(status: 400, body: { "message" => "Validation failed", "errors" => [{ "field" => "field1", "message" => "is invalid" }], "error_type" => "unprocessable_entity" }.to_json)
+        .to_return(status: 400, body: { "message" => "Validation failed", "errors" => [{ "field" => "field1", "message" => "is invalid" }], "error_type" => "unprocessable_entity" }.to_json)
 
       expect(subject).to have_attributes(
         code: "400",
@@ -109,7 +108,7 @@ describe HubriseClient::V1 do
 
     it "raises for 401" do
       stub_request(:get, "https://api.hubrise.com/v1/some_path").with(headers: { "X-Access-Token" => "access_token1" })
-                                                                .to_return(status: 401)
+        .to_return(status: 401)
 
       expect { subject }.to raise_error(HubriseClient::InvalidHubriseToken)
     end
