@@ -166,25 +166,27 @@ module HubriseClient
     # --------------------
     # Inventory
     # --------------------
-    def get_location_inventory(catalog_id, location_id = nil)
+    def get_inventory(catalog_id = nil, location_id = nil)
       endpoint = inventory_endpoint(catalog_id, location_id)
       call_api(endpoint)
     end
 
-    def update_location_inventory(catalog_id, params, location_id = nil)
+    def update_inventory(params, catalog_id = nil, location_id = nil)
       endpoint = inventory_endpoint(catalog_id, location_id)
       call_api(endpoint, :put, data: params)
     end
 
-    def patch_location_inventory(catalog_id, params, location_id = nil)
+    def patch_inventory(params, catalog_id = nil, location_id = nil)
       endpoint = inventory_endpoint(catalog_id, location_id)
       call_api(endpoint, :patch, data: params)
     end
 
-    def inventory_endpoint(catalog_id, location_id = nil)
-      location_id ?
-        "/catalogs/#{catalog_id}/locations/#{location_id}/inventory" :
-        "/catalogs/#{catalog_id}/location/inventory"
+    def inventory_endpoint(catalog_id = nil, location_id = nil)
+      if location_id
+        "/catalogs/#{catalog_id_fallback(catalog_id)}/locations/#{location_id}/inventory"
+      else
+        "/catalogs/#{catalog_id_fallback(catalog_id)}/location/inventory"
+      end
     end
 
     private :inventory_endpoint

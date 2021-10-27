@@ -322,6 +322,60 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
   # [GET] /catalogs/zrk6b/images/zrn61/data with { headers: { "X-Access-Token": "access_token1" }}
   ```
 
+### GET_INVENTORY
+
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.get_inventory("zrn61", "wy3xz")
+  # [GET] /catalogs/zrn61/locations/wy3xz/inventory with { headers: { "X-Access-Token": "access_token1" }}
+  ```
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.get_inventory("zrn61")
+  # [GET] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }}
+  ```
+- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrn61" }`
+  ```ruby
+  client.get_inventory
+  # [GET] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }}
+  ```
+
+### UPDATE_INVENTORY
+
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.update_inventory([{sku_ref: "m9qqs"}], "zrn61", "wy3xz")
+  # [PUT] /catalogs/zrn61/locations/wy3xz/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  ```
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.update_inventory([{sku_ref: "m9qqs"}], "zrn61")
+  # [PUT] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  ```
+- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrn61" }`
+  ```ruby
+  client.update_inventory([{sku_ref: "m9qqs"}])
+  # [PUT] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  ```
+
+### PATCH_INVENTORY
+
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.patch_inventory([{sku_ref: "m9qqs"}], "zrn61", "wy3xz")
+  # [PATCH] /catalogs/zrn61/locations/wy3xz/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  ```
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.patch_inventory([{sku_ref: "m9qqs"}], "zrn61")
+  # [PATCH] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  ```
+- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrn61" }`
+  ```ruby
+  client.patch_inventory([{sku_ref: "m9qqs"}])
+  # [PATCH] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  ```
+
 ### CREATE_LOYALTY_CARD
 
 - Initialized with `client_attrs = { access_token: "access_token1" }`
