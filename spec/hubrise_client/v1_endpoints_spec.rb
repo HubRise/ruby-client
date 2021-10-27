@@ -112,6 +112,18 @@ describe HubriseClient::V1 do
       [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61/data"],
       [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"]
     },
+    get_location_inventory: {
+      [{}, ["zrk6b", "zrn61"]] => [:get, "/catalogs/zrk6b/locations/zrn61/inventory"],
+      [{}, ["zrk6b"]] => [:get, "/catalogs/zrk6b/location/inventory"],
+    },
+    update_location_inventory: {
+      [{}, ["zrk6b", "zrn61"]] => [:put, "/catalogs/zrk6b/locations/zrn61/inventory"],
+      [{}, ["zrk6b"]] => [:put, "/catalogs/zrk6b/location/inventory"],
+    },
+    patch_location_inventory: {
+      [{}, ["zrk6b", "zrn61"]] => [:patch, "/catalogs/zrk6b/locations/zrn61/inventory"],
+      [{}, ["zrk6b"]] => [:patch, "/catalogs/zrk6b/location/inventory"],
+    },
     create_loyalty_card: {
       [{ customer_list_id: "zrn61" }, [{ name: "LC1" }]] => [:post, "/customer_lists/zrn61/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],
       [{}, [{ name: "LC1" }, "zrn61"]] => [:post, "/customer_lists/zrn61/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }]

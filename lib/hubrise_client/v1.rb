@@ -163,6 +163,32 @@ module HubriseClient
     end
 
     # --------------------
+    # Inventory
+    # --------------------
+    def get_location_inventory(catalog_id, location_id = nil)
+      endpoint = inventory_endpoint(catalog_id, location_id)
+      call_api(endpoint)
+    end
+
+    def update_location_inventory(catalog_id, params, location_id = nil)
+      endpoint = inventory_endpoint(catalog_id, location_id)
+      call_api(endpoint, :put, data: params)
+    end
+
+    def patch_location_inventory(catalog_id, params, location_id = nil)
+      endpoint = inventory_endpoint(catalog_id, location_id)
+      call_api(endpoint, :patch, data: params)
+    end
+
+    def inventory_endpoint(catalog_id, location_id = nil)
+      location_id ?
+        "/catalogs/#{catalog_id}/locations/#{location_id}/inventory" :
+        "/catalogs/#{catalog_id}/location/inventory"
+    end
+
+    private :inventory_endpoint
+
+    # --------------------
     # Loyalty cards
     # --------------------
     def create_loyalty_card(params, customer_list_id = nil)
