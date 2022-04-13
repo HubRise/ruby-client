@@ -144,5 +144,54 @@ describe HubriseClient::V1 do
         expect(called).to be_truthy
       end
     end
+
+    describe "#next?" do
+      it "is false if cursor-next header is empty" do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path")
+          .to_return(status: 200, body: {}.to_json)
+
+        expect(subject.next?).to eq(false)
+      end
+
+      it "is true if cursor-next header is present" do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path")
+          .to_return(status: 200, body: {}.to_json, headers: { "X-Cursor-Next" => "someid" })
+
+        expect(subject.next?).to eq(true)
+      end
+    end
+
+    describe "#next_page" do
+      it "makes a new request with a new cursor" do
+        page1_body = { "page" => 1 }
+        page2_body = { "page" => 2 }
+        page3_body = { "page" => 3 }
+
+        stub_request(:get, "https://api.hubrise.com/v1/some_path")
+          .to_return(status: 200, body: page1_body.to_json, headers: { "X-Cursor-Next" => "someid1" })
+
+        stub_request(:get, "https://api.hubrise.com/v1/some_path?cursor=someid1")
+          .to_return(status: 200, body: page2_body.to_json, headers: { "X-Cursor-Next" => "someid2" })
+
+        stub_request(:get, "https://api.hubrise.com/v1/some_path?cursor=someid2")
+          .to_return(status: 200, body: page3_body.to_json)
+
+        expect(subject.data).to eq(page1_body)
+
+        response2 = subject.next_page
+        expect(response2.data).to eq(page2_body)
+
+        response3 = response2.next_page
+        expect(response3.data).to eq(page3_body)
+      end
+    end
+
+    it "appends count param" do
+      stub = stub_request(:get, "https://api.hubrise.com/v1/some_path?count=100")
+
+      client.send(:call_api, "/some_path", data: { count: 100 })
+
+      expect(stub).to have_been_requested
+    end
   end
 end

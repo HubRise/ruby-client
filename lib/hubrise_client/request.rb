@@ -29,7 +29,7 @@ module HubriseClient
       @http_request = build_request
 
       @http_response = perform_request(@http_request)
-      @response = Response.new(@http_response)
+      @response = Response.new(@http_response, self)
 
       case @http_response
       when Net::HTTPUnauthorized
@@ -45,6 +45,13 @@ module HubriseClient
       callback.call(self, @response) if @http_request && callback
     end
 
+    def next_page_request(new_cursor)
+      new_data = data || {}
+      new_data[:cursor] = new_cursor
+
+      Request.from_h(to_h.merge(data: new_data))
+    end
+
     protected
 
     def protocol
@@ -53,16 +60,19 @@ module HubriseClient
 
     def build_request
       request_uri = URI.parse(protocol + "://" + hostname + path)
+
       request_headers = headers || {}
       request_headers["X-Access-Token"] = access_token if access_token
 
-      request_body_data = data
+      request_body_data = nil
 
       if method == :get
-        request_uri = add_params_to_uri(request_uri, data) if data&.count&.positive?
+        request_uri = add_params_to_uri(request_uri, data) if data && !data.empty?
       elsif json
         request_headers["Content-Type"] ||= "application/json"
         request_body_data = data.to_json
+      else
+        request_body_data = data
       end
 
       REQUESTS_HASH[method].new(request_uri, request_headers).tap do |request|

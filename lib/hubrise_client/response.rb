@@ -4,9 +4,10 @@ module HubriseClient
     attr_reader :code, :failed, :data, :error_type, :error_message, :errors, :http_response
     alias_method :failed?, :failed
 
-    def initialize(http_response)
-      @http_response  = http_response
-      @code           = http_response.code
+    def initialize(http_response, request)
+      @http_response = http_response
+      @request = request
+      @code = http_response.code
 
       json_body = begin
                     JSON.parse(http_response.body)
@@ -31,6 +32,18 @@ module HubriseClient
 
     def retry_after
       http_response.is_a?(Net::HTTPTooManyRequests) && http_response["retry-after"].to_i
+    end
+
+    def next?
+      !!cursor_next
+    end
+
+    def next_page
+      @request.next_page_request(cursor_next).perform
+    end
+
+    def cursor_next
+      http_response["X-Cursor-Next"]
     end
   end
 end
