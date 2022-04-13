@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 module HubriseClient
-  class Request
+  class Request < Struct.new(:hostname,
+                             :path,
+                             :method,
+                             :data,
+                             :access_token,
+                             :use_https,
+                             :logger,
+                             :json,
+                             :headers,
+                             :callback)
+
     REQUESTS_HASH = {
       get: Net::HTTP::Get,
       post: Net::HTTP::Post,
@@ -9,19 +19,16 @@ module HubriseClient
       delete: Net::HTTP::Delete,
     }.freeze
 
-    attr_reader :http_request
-    def initialize(hostname:, access_token: nil, use_https: false, logger: nil)
-      @hostname     = hostname
-      @access_token = access_token
-      @use_https    = use_https
-      @protocol     = use_https ? "https" : "http"
-      @logger       = logger
+    def self.from_h(hash)
+      new(*hash.values_at(*members))
     end
 
-    def perform(method, path, data, json: true, headers: {})
-      uri = URI.parse(@protocol + "://" + @hostname + path)
-      @http_request = build_request(uri, method, data, json: json, headers: headers)
-      @http_response = perform_request(uri, @http_request)
+    attr_reader :http_request
+
+    def perform
+      @http_request = build_request
+
+      @http_response = perform_request(@http_request)
       @response = Response.new(@http_response)
 
       case @http_response
@@ -35,25 +42,31 @@ module HubriseClient
     rescue Errno::ECONNREFUSED
       raise HubriseError, "API is not reachable"
     ensure
-      yield(self, @response) if @http_request && block_given?
+      callback.call(self, @response) if @http_request && callback
     end
 
     protected
 
-    def build_request(uri, method, data, json:, headers:)
-      headers["X-Access-Token"] = @access_token if @access_token
+    def protocol
+      use_https ? "https" : "http"
+    end
+
+    def build_request
+      request_uri = URI.parse(protocol + "://" + hostname + path)
+      request_headers = headers || {}
+      request_headers["X-Access-Token"] = access_token if access_token
+
+      request_body_data = data
 
       if method == :get
-        uri = add_params_to_uri(uri, data) if data&.count&.positive?
-
-        data = nil
+        request_uri = add_params_to_uri(request_uri, data) if data&.count&.positive?
       elsif json
-        headers["Content-Type"] ||= "application/json"
-        data = data.to_json
+        request_headers["Content-Type"] ||= "application/json"
+        request_body_data = data.to_json
       end
 
-      REQUESTS_HASH[method].new(uri, headers).tap do |request|
-        request.body = data
+      REQUESTS_HASH[method].new(request_uri, request_headers).tap do |request|
+        request.body = request_body_data
       end
     end
 
@@ -62,10 +75,12 @@ module HubriseClient
       uri
     end
 
-    def perform_request(uri, request)
-      http          = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl  = @use_https
-      http.set_debug_output(@logger) if @logger
+    def perform_request(request)
+      uri = request.uri
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = use_https
+      http.set_debug_output(logger) if logger
       http.request(request)
     end
   end
