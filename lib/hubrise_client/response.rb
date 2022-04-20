@@ -34,6 +34,18 @@ module HubriseClient
       http_response.is_a?(Net::HTTPTooManyRequests) && http_response["retry-after"].to_i
     end
 
+    def each_page
+      return enum_for(:each_page) unless block_given?
+
+      yield(self)
+
+      response = self
+      while response.next?
+        response = response.next_page
+        yield(response)
+      end
+    end
+
     def next?
       !!cursor_next
     end
