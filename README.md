@@ -78,3 +78,21 @@ Now you can call the [helper methods](https://github.com/HubRise/ruby-client/blo
 ```ruby
 client.get_account
 ```
+
+## Pagination
+
+`#next_page?`, `#next_page` and `#each_page` might be helpful when working with paginated [endpoints](https://www.hubrise.com/developers/api/general-concepts/#pagination)
+
+```ruby
+response = client.get_all_customers
+
+response.next_page?
+# => true
+
+response.next_page.data
+# => [{ first_name:... }]
+
+response.each_page do |page_response|
+    page_response.data
+    # => [{ first_name:... }]
+end
