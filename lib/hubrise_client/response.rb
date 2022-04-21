@@ -40,13 +40,13 @@ module HubriseClient
       yield(self)
 
       response = self
-      while response.next?
+      while response.next_page?
         response = response.next_page
         yield(response)
       end
     end
 
-    def next?
+    def next_page?
       !!cursor_next
     end
 

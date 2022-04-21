@@ -145,19 +145,19 @@ describe HubriseClient::V1 do
       end
     end
 
-    describe "#next?" do
+    describe "#next_page?" do
       it "is false if cursor-next header is empty" do
         stub_request(:get, "https://api.hubrise.com/v1/some_path")
           .to_return(status: 200, body: {}.to_json)
 
-        expect(subject.next?).to eq(false)
+        expect(subject.next_page?).to eq(false)
       end
 
       it "is true if cursor-next header is present" do
         stub_request(:get, "https://api.hubrise.com/v1/some_path")
           .to_return(status: 200, body: {}.to_json, headers: { "X-Cursor-Next" => "someid" })
 
-        expect(subject.next?).to eq(true)
+        expect(subject.next_page?).to eq(true)
       end
     end
 
