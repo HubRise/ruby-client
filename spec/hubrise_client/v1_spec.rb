@@ -144,5 +144,69 @@ describe HubriseClient::V1 do
         expect(called).to be_truthy
       end
     end
+
+    describe "#next_page?" do
+      it "is false if cursor-next header is empty" do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path")
+          .to_return(status: 200, body: {}.to_json)
+
+        expect(subject.next_page?).to eq(false)
+      end
+
+      it "is true if cursor-next header is present" do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path")
+          .to_return(status: 200, body: {}.to_json, headers: { "X-Cursor-Next" => "someid" })
+
+        expect(subject.next_page?).to eq(true)
+      end
+    end
+
+    describe "pagination" do
+      let(:pages) do
+        [
+          { "page" => 1 },
+          { "page" => 2 },
+          { "page" => 3 },
+        ]
+      end
+
+      before(:each) do
+        stub_request(:get, "https://api.hubrise.com/v1/some_path")
+          .to_return(status: 200, body: pages[0].to_json, headers: { "X-Cursor-Next" => "someid1" })
+
+        stub_request(:get, "https://api.hubrise.com/v1/some_path?cursor=someid1")
+          .to_return(status: 200, body: pages[1].to_json, headers: { "X-Cursor-Next" => "someid2" })
+
+        stub_request(:get, "https://api.hubrise.com/v1/some_path?cursor=someid2")
+          .to_return(status: 200, body: pages[2].to_json)
+      end
+
+      describe "#next_page" do
+        it "makes a new request with a new cursor" do
+          expect(subject.data).to eq(pages[0])
+          expect(subject.next_page.data).to eq(pages[1])
+        end
+      end
+
+      describe "#each_page" do
+        it "returns enum" do
+          expect(subject.each_page).to be_kind_of(Enumerable)
+        end
+
+        it "loops through all pages" do
+          processed_pages = subject.each_page.map(&:data)
+
+          expect(processed_pages).to eq(pages)
+        end
+      end
+
+      it "appends count param" do
+        stub = stub_request(:get, "https://api.hubrise.com/v1/some_path?count=100")
+
+        client.send(:call_api, "/some_path", data: { count: 100 })
+
+        expect(stub).to have_been_requested
+      end
+    end
   end
 end
