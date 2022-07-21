@@ -86,7 +86,9 @@ describe HubriseClient::V1 do
     },
     get_catalog: {
       [{}, ["zrn61"]] => [:get, "/catalogs/zrn61"],
+      [{}, ["zrn61", { hide_data: true }]] => [:get, "/catalogs/zrn61?hide_data=true"],
       [{ catalog_id: "wy3xz" }, []] => [:get, "/catalogs/wy3xz"],
+      [{}, ["wy3xz", { hide_data: true }]] => [:get, "/catalogs/wy3xz?hide_data=true"],
     },
     create_account_catalog: {
       [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
