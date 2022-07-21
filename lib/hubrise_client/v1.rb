@@ -126,7 +126,7 @@ module HubriseClient
       call_api("/accounts/#{account_id}/catalogs")
     end
 
-    def get_catalog(catalog_id = nil, hide_data = false)
+    def get_catalog(catalog_id = nil, hide_data: false)
       query_params = hide_data ? { hide_data: true } : {}
       call_api("/catalogs/#{catalog_id_fallback(catalog_id)}", :get, data: query_params)
     end
