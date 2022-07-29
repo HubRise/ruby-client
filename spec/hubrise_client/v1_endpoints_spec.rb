@@ -105,6 +105,10 @@ describe HubriseClient::V1 do
       [{}, ["bin1", "image/png", "zrn61"]] => [:post, "/catalogs/zrn61/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
       [{ catalog_id: "zrk6b" }, ["bin1", "image/png"]] => [:post, "/catalogs/zrk6b/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
     },
+    get_images: {
+      [{}, ["wy3xz"]] => [:get, "/catalogs/wy3xz/images"],
+      [{ catalog_id: "zrk6b" }, []] => [:get, "/catalogs/zrk6b/images"],
+    },
     get_image: {
       [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61"],
       [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61"],

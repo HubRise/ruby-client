@@ -296,6 +296,19 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
   # [POST] /catalogs/zrk6b/images with { headers: { "Content-Type": "image/png" }, body: "bin1" }
   ```
 
+### GET_IMAGES
+
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.get_images("wy3xz")
+  # [GET] /catalogs/wy3xz/images with { headers: { "X-Access-Token": "access_token1" }}
+  ```
+- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrk6b" }`
+  ```ruby
+  client.get_images
+  # [GET] /catalogs/zrk6b/images with { headers: { "X-Access-Token": "access_token1" }}
+  ```
+
 ### GET_IMAGE
 
 - Initialized with `client_attrs = { access_token: "access_token1" }`
