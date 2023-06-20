@@ -5,17 +5,17 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Code style check
-
-    container:
-      image: ruby:2.7.7-bullseye
+    name: Rubocop
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
-      - name: Install rubocop
-        run: gem install rubocop -v 0.81.0
+      - name: Install Ruby, run bundle install and cache the gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.7
+          bundler-cache: true
 
       - name: Rubocop
-        run: rubocop
+        run: bundle exec rubocop
