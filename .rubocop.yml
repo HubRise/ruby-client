@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'db/*schema.rb'
+    - 'vendor/bundle/**/*'
   DisabledByDefault: true
   StyleGuideBaseURL: https://shopify.github.io/ruby-style-guide/
 
