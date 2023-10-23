@@ -21,6 +21,9 @@ describe HubriseClient::V1 do
       [{}, ["zrn61"]] => [:get, "/locations/zrn61"],
       [{}, []] => [:get, "/location"],
     },
+    update_location: {
+      [{}, ["zrn61", { cutoff_time: "06:00" }]] => [:patch, "/locations/zrn61", { body: { cutoff_time: "06:00" }.to_json, headers: { "Content-Type" => "application/json" } }],
+    },
     get_orders: {
       [{}, ["zrn61", { status: "new" }]] => [:get, "/locations/zrn61/orders?status=new"],
     },
