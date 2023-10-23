@@ -37,6 +37,10 @@ module HubriseClient
       end
     end
 
+    def update_location(location_id, params)
+      call_api("/locations/#{location_id}", :patch, data: params)
+    end
+
     # --------------------
     # Orders
     # --------------------
