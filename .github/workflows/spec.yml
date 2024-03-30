@@ -1,15 +1,13 @@
 name: spec
-
 on: push
 
 jobs:
-  test:
+  spec:
     runs-on: ubuntu-latest
-    name: Run all specs
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Ruby, run bundle install and cache the gems
         uses: ruby/setup-ruby@v1
