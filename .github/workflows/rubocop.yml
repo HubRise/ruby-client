@@ -2,7 +2,7 @@ name: rubocop
 on: push
 
 jobs:
-  test:
+  rubocop:
     runs-on: ubuntu-latest
 
     steps:
