@@ -89,9 +89,9 @@ describe HubriseClient::V1 do
     },
     get_catalog: {
       [{}, ["zrn61"]] => [:get, "/catalogs/zrn61"],
-      [{}, ["zrn61", { hide_data: true }]] => [:get, "/catalogs/zrn61?hide_data=true"],
+      [{}, ["zrn61", :hide_data]] => [:get, "/catalogs/zrn61?hide_data=true"],
       [{ catalog_id: "wy3xz" }, []] => [:get, "/catalogs/wy3xz"],
-      [{}, ["wy3xz", { hide_data: true }]] => [:get, "/catalogs/wy3xz?hide_data=true"],
+      [{}, ["wy3xz", :hide_data]] => [:get, "/catalogs/wy3xz?hide_data=true"],
     },
     create_account_catalog: {
       [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
@@ -165,7 +165,8 @@ describe HubriseClient::V1 do
 
             client = HubriseClient::V1.new(nil, nil, init_args)
             api_response = if method_args.any?
-              client.public_send(method, *method_args)
+              kwargs = method_args.delete(:hide_data) ? { hide_data: true } : {}
+              client.public_send(method, *method_args, **kwargs)
             else
               client.public_send(method)
             end
