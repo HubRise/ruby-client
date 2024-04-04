@@ -15,8 +15,5 @@ Gem::Specification.new do |s|
 
   s.files = Dir["lib/**/*", "LICENSE", "Rakefile", "README.md", "V1_ENDPOINTS.md"]
 
-  s.add_development_dependency("rspec")
-  s.add_development_dependency("rubocop")
-  s.add_development_dependency("simplecov")
-  s.add_development_dependency("webmock")
+  s.required_ruby_version = "~> 2.7.7"
 end
