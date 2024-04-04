@@ -96,3 +96,30 @@ response.each_page do |page_response|
     page_response.data
     # => [{ first_name:... }]
 end
+```
+
+# Publish changes to this gem
+
+1. Make sure all local changes are committed.
+
+2. Increase version in `lib/hubrise_client/version.rb`
+
+3. Tag the repository:
+
+```bash
+VERSION=2.0.9
+git add lib/hubrise_client/version.rb
+git commit -m "Version $VERSION"
+git tag v$VERSION
+git push --tags
+git push
+```
+
+4. Build & publish:
+
+```bash
+rm -f hubrise_client-*.gem
+gem build hubrise_client
+gem push hubrise_client-*.gem
+rm -f hubrise_client-*.gem
+``` 
