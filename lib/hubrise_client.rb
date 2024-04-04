@@ -11,7 +11,10 @@ require_relative "hubrise_client/v1"
 
 module HubriseClient
   class HubriseError              < StandardError; end
+
   class HubriseAccessTokenMissing < HubriseError; end
+
   class InvalidHubriseGrantParams < HubriseError; end
+
   class InvalidHubriseToken       < HubriseError; end
 end
