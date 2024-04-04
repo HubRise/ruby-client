@@ -43,7 +43,7 @@ module HubriseClient
         client_id: @app_id
       )
 
-      (@use_https ? "https" : "http") + "://" + oauth2_hubrise_hostname_with_version + "/authorize?" + URI.encode_www_form(params) # rubocop:disable Metrics/LineLength
+      (@use_https ? "https" : "http") + "://" + oauth2_hubrise_hostname_with_version + "/authorize?" + URI.encode_www_form(params) # rubocop:disable Layout/LineLength
     end
 
     def authorize!(authorization_code)
