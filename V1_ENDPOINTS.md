@@ -80,10 +80,19 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
 
 ### UPDATE_ORDER
 
+- This method is deprecated. Use `PATCH_ORDER` instead.
 - Initialized with `client_attrs = { access_token: "access_token1" }`
   ```ruby
   client.update_order("zrn61", "wy3xz", { status: "delivered" })
   # [PUT] /locations/zrn61/orders/wy3xz with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
+  ```
+
+### PATCH_ORDER
+
+- Initialized with `client_attrs = { access_token: "access_token1" }`
+  ```ruby
+  client.patch_order("zrn61", "wy3xz", { status: "delivered" })
+  # [PATCH] /locations/zrn61/orders/wy3xz with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
   ```
 
 ### GET_CALLBACK

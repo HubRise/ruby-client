@@ -36,6 +36,9 @@ describe HubriseClient::V1 do
     update_order: {
       [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:put, "/locations/zrn61/orders/wy3xz", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
+    patch_order: {
+      [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:patch, "/locations/zrn61/orders/wy3xz", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
+    },
     get_callback: {
       [{}, []] => [:get, "/callback"],
     },

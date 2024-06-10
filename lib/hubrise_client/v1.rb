@@ -56,8 +56,13 @@ module HubriseClient
       call_api("/locations/#{location_id}/orders", :post, data: params)
     end
 
+    # @deprecated Use patch_order instead
     def update_order(location_id, order_id, params)
       call_api("/locations/#{location_id}/orders/#{order_id}", :put, data: params)
+    end
+
+    def patch_order(location_id, order_id, params)
+      call_api("/locations/#{location_id}/orders/#{order_id}", :patch, data: params)
     end
 
     # --------------------
