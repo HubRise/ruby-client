@@ -39,8 +39,8 @@ module HubriseClient
 
         @response
       end
-    rescue Errno::ECONNREFUSED
-      raise HubriseError, "API is not reachable"
+    rescue Errno::ECONNREFUSED => e
+      raise HubriseError, "API is not reachable: #{e}"
     ensure
       callback.call(self, @response) if @http_request && callback
     end
