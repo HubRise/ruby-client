@@ -5,7 +5,7 @@ describe HubriseClient::V1 do
 
   {
     get_account: {
-      [{}, ["zrn61"]] => [:get, "/accounts/zrn61"],
+      [{}, ["accountIdX"]] => [:get, "/accounts/accountIdX"],
       [{}, []] => [:get, "/account"],
     },
     get_accounts: {
@@ -18,26 +18,35 @@ describe HubriseClient::V1 do
       [{}, []] => [:get, "/locations"],
     },
     get_location: {
-      [{}, ["zrn61"]] => [:get, "/locations/zrn61"],
+      [{}, ["locationIdX"]] => [:get, "/locations/locationIdX"],
       [{}, []] => [:get, "/location"],
     },
-    update_location: {
-      [{}, ["zrn61", { cutoff_time: "06:00" }]] => [:patch, "/locations/zrn61", { body: { cutoff_time: "06:00" }.to_json, headers: { "Content-Type" => "application/json" } }],
+    patch_location: {
+      [{}, ["locationIdX", { cutoff_time: "06:00" }]] => [:patch, "/locations/locationIdX", { body: { cutoff_time: "06:00" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     get_orders: {
-      [{}, ["zrn61", { status: "new" }]] => [:get, "/locations/zrn61/orders?status=new"],
+      [{}, ["locationIdX", { status: "new" }]] => [:get, "/locations/locationIdX/orders?status=new"],
     },
     get_order: {
-      [{}, ["zrn61", "wy3xz"]] => [:get, "/locations/zrn61/orders/wy3xz"],
+      [{}, ["locationIdX", "orderIdX"]] => [:get, "/locations/locationIdX/orders/orderIdX"],
     },
     create_order: {
-      [{}, ["zrn61", { status: "new" }]] => [:post, "/locations/zrn61/orders", { body: { status: "new" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["locationIdX", { status: "new" }]] => [:post, "/locations/locationIdX/orders", { body: { status: "new" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     update_order: {
-      [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:put, "/locations/zrn61/orders/wy3xz", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["locationIdX", "orderIdX", { status: "delivered" }]] => [:put, "/locations/locationIdX/orders/orderIdX", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     patch_order: {
-      [{}, ["zrn61", "wy3xz", { status: "delivered" }]] => [:patch, "/locations/zrn61/orders/wy3xz", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["locationIdX", "orderIdX", { status: "delivered" }]] => [:patch, "/locations/locationIdX/orders/orderIdX", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
+    },
+    get_delivery: {
+      [{}, ["locationIdX", "orderIdX"]] => [:get, "/locations/locationIdX/orders/orderIdX/delivery"],
+    },
+    create_delivery: {
+      [{}, ["locationIdX", "orderIdX", { carrier: "UPS" }]] => [:post, "/locations/locationIdX/orders/orderIdX/delivery", { body: { carrier: "UPS" }.to_json, headers: { "Content-Type" => "application/json" } }],
+    },
+    patch_delivery: {
+      [{}, ["locationIdX", "orderIdX", { status: "delivered" }]] => [:patch, "/locations/locationIdX/orders/orderIdX/delivery", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     get_callback: {
       [{}, []] => [:get, "/callback"],
@@ -46,7 +55,7 @@ describe HubriseClient::V1 do
       [{}, []] => [:get, "/callback/events"],
     },
     delete_event: {
-      [{}, ["zrn61"]] => [:delete, "/callback/events/zrn61"],
+      [{}, ["eventIdX"]] => [:delete, "/callback/events/eventIdX"],
     },
     update_callback: {
       [{}, [{ "order" => ["create"] }]] => [:post, "/callback", { body: { order: ["create"] }.to_json, headers: { "Content-Type" => "application/json" } }],
@@ -55,96 +64,95 @@ describe HubriseClient::V1 do
       [{}, []] => [:delete, "/callback"],
     },
     get_location_customer_lists: {
-      [{}, ["zrn61"]] => [:get, "/locations/zrn61/customer_lists"],
+      [{}, ["locationIdX"]] => [:get, "/locations/locationIdX/customer_lists"],
     },
     get_account_customer_lists: {
-      [{}, ["zrn61"]] => [:get, "/accounts/zrn61/customer_lists"],
+      [{}, ["accountIdX"]] => [:get, "/accounts/accountIdX/customer_lists"],
     },
     get_customer_list: {
-      [{}, ["zrn61"]] => [:get, "/customer_lists/zrn61"],
-      [{ customer_list_id: "wy3xz" }, []] => [:get, "/customer_lists/wy3xz"],
+      [{}, ["customerListIdX"]] => [:get, "/customer_lists/customerListIdX"],
+      [{ customer_list_id: "customerListIdX" }, []] => [:get, "/customer_lists/customerListIdX"],
     },
     get_all_customers: {
-      [{}, ["zrn61"]] => [:get, "/customer_lists/zrn61/customers"],
-      [{ customer_list_id: "wy3xz" }, []] => [:get, "/customer_lists/wy3xz/customers"],
+      [{}, ["customerListIdX"]] => [:get, "/customer_lists/customerListIdX/customers"],
+      [{ customer_list_id: "customerListIdX" }, []] => [:get, "/customer_lists/customerListIdX/customers"],
     },
     search_customers: {
-      [{ customer_list_id: "zrn61" }, [{ email: "nsave@*" }]] => [:get, "/customer_lists/zrn61/customers?email=nsave@*"],
-      [{}, [{ email: "nsave@*" }, "wy3xz"]] => [:get, "/customer_lists/wy3xz/customers?email=nsave@*"],
+      [{ customer_list_id: "customerListIdX" }, [{ email: "nsave@*" }]] => [:get, "/customer_lists/customerListIdX/customers?email=nsave@*"],
+      [{}, [{ email: "nsave@*" }, "customerListIdX"]] => [:get, "/customer_lists/customerListIdX/customers?email=nsave@*"],
     },
     get_customer: {
-      [{ customer_list_id: "zrn61" }, ["zrk6b"]] => [:get, "/customer_lists/zrn61/customers/zrk6b"],
-      [{}, ["zrk6b", "wy3xz"]] => [:get, "/customer_lists/wy3xz/customers/zrk6b"],
+      [{ customer_list_id: "customerListIdX" }, ["customerIdX"]] => [:get, "/customer_lists/customerListIdX/customers/customerIdX"],
+      [{}, ["customerIdX", "customerListIdX"]] => [:get, "/customer_lists/customerListIdX/customers/customerIdX"],
     },
     create_customer: {
-      [{ customer_list_id: "zrn61" }, [{ first_name: "nsave" }]] => [:post, "/customer_lists/zrn61/customers", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
-      [{}, [{ first_name: "nsave" }, "wy3xz"]] => [:post, "/customer_lists/wy3xz/customers", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{ customer_list_id: "customerListIdX" }, [{ first_name: "nsave" }]] => [:post, "/customer_lists/customerListIdX/customers", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ first_name: "nsave" }, "customerListIdX"]] => [:post, "/customer_lists/customerListIdX/customers", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     update_customer: {
-      [{ customer_list_id: "zrn61" }, ["zrk6b", { first_name: "nsave" }]] => [:put, "/customer_lists/zrn61/customers/zrk6b", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
-      [{}, ["zrk6b", { first_name: "nsave" }, "wy3xz"]] => [:put, "/customer_lists/wy3xz/customers/zrk6b", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{ customer_list_id: "customerListIdX" }, ["customerIdX", { first_name: "nsave" }]] => [:put, "/customer_lists/customerListIdX/customers/customerIdX", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["customerIdX", { first_name: "nsave" }, "customerListIdX"]] => [:put, "/customer_lists/customerListIdX/customers/customerIdX", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     get_location_catalogs: {
-      [{}, ["zrn61"]] => [:get, "/locations/zrn61/catalogs"],
+      [{}, ["locationIdX"]] => [:get, "/locations/locationIdX/catalogs"],
     },
     get_account_catalogs: {
-      [{}, ["zrn61"]] => [:get, "/accounts/zrn61/catalogs"],
+      [{}, ["accountIdX"]] => [:get, "/accounts/accountIdX/catalogs"],
     },
     get_catalog: {
-      [{}, ["zrn61"]] => [:get, "/catalogs/zrn61"],
-      [{}, ["zrn61", :hide_data]] => [:get, "/catalogs/zrn61?hide_data=true"],
-      [{ catalog_id: "wy3xz" }, []] => [:get, "/catalogs/wy3xz"],
-      [{}, ["wy3xz", :hide_data]] => [:get, "/catalogs/wy3xz?hide_data=true"],
+      [{}, ["catalogIdX"]] => [:get, "/catalogs/catalogIdX"],
+      [{}, ["catalogIdX", :hide_data]] => [:get, "/catalogs/catalogIdX?hide_data=true"],
+      [{ catalog_id: "catalogIdX" }, []] => [:get, "/catalogs/catalogIdX"],
     },
     create_account_catalog: {
       [{}, [{ name: "Catalog1" }]] => [:post, "/account/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     create_location_catalog: {
-      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:post, "/locations/zrn61/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ name: "Catalog1" }, "locationIdX"]] => [:post, "/locations/locationIdX/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
       [{}, [{ name: "Catalog1" }]] => [:post, "/location/catalogs", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     update_catalog: {
-      [{}, [{ name: "Catalog1" }, "zrn61"]] => [:put, "/catalogs/zrn61", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ name: "Catalog1" }, "catalogIdX"]] => [:put, "/catalogs/catalogIdX", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
       [{ catalog_id: "zrk6b" }, [{ name: "Catalog1" }]] => [:put, "/catalogs/zrk6b", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     create_image: {
-      [{}, ["bin1", "image/png", "zrn61"]] => [:post, "/catalogs/zrn61/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
+      [{}, ["bin1", "image/png", "catalogIdX"]] => [:post, "/catalogs/catalogIdX/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
       [{ catalog_id: "zrk6b" }, ["bin1", "image/png"]] => [:post, "/catalogs/zrk6b/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
     },
     get_images: {
-      [{}, ["wy3xz"]] => [:get, "/catalogs/wy3xz/images"],
+      [{}, ["catalogIdX"]] => [:get, "/catalogs/catalogIdX/images"],
       [{ catalog_id: "zrk6b" }, []] => [:get, "/catalogs/zrk6b/images"],
     },
     get_image: {
-      [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61"],
-      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61"],
+      [{}, ["imageIdX", "catalogIdX"]] => [:get, "/catalogs/catalogIdX/images/imageIdX"],
+      [{ catalog_id: "catalogIdX" }, ["imageIdX"]] => [:get, "/catalogs/catalogIdX/images/imageIdX"],
     },
     get_image_data: {
-      [{}, ["zrn61", "wy3xz"]] => [:get, "/catalogs/wy3xz/images/zrn61/data"],
-      [{ catalog_id: "zrk6b" }, ["zrn61"]] => [:get, "/catalogs/zrk6b/images/zrn61/data"],
+      [{}, ["imageIdX", "catalogIdX"]] => [:get, "/catalogs/catalogIdX/images/imageIdX/data"],
+      [{ catalog_id: "catalogIdX" }, ["imageIdX"]] => [:get, "/catalogs/catalogIdX/images/imageIdX/data"],
     },
     get_inventory: {
-      [{}, ["zrk6b", "zrn61"]] => [:get, "/catalogs/zrk6b/locations/zrn61/inventory"],
-      [{}, ["zrk6b"]] => [:get, "/catalogs/zrk6b/location/inventory"],
-      [{ catalog_id: "zrk6b" }, []] => [:get, "/catalogs/zrk6b/location/inventory"],
+      [{}, ["catalogIdX", "locationIdX"]] => [:get, "/catalogs/catalogIdX/locations/locationIdX/inventory"],
+      [{}, ["catalogIdX"]] => [:get, "/catalogs/catalogIdX/location/inventory"],
+      [{ catalog_id: "catalogIdX" }, []] => [:get, "/catalogs/catalogIdX/location/inventory"],
     },
     update_inventory: {
-      [{}, [[{ sku_ref: "sku_refX" }], "zrk6b", "zrn61"]] => [:put, "/catalogs/zrk6b/locations/zrn61/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
-      [{}, [[{ sku_ref: "sku_refX" }], "zrk6b"]] => [:put, "/catalogs/zrk6b/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
-      [{ catalog_id: "zrk6b" }, [[{ sku_ref: "sku_refX" }]]] => [:put, "/catalogs/zrk6b/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [[{ sku_ref: "sku_refX" }], "catalogIdX", "locationIdX"]] => [:put, "/catalogs/catalogIdX/locations/locationIdX/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [[{ sku_ref: "sku_refX" }], "catalogIdX"]] => [:put, "/catalogs/catalogIdX/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
+      [{ catalog_id: "catalogIdX" }, [[{ sku_ref: "sku_refX" }]]] => [:put, "/catalogs/catalogIdX/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
     },
     patch_inventory: {
-      [{}, [[{ sku_ref: "sku_refX" }], "zrk6b", "zrn61"]] => [:patch, "/catalogs/zrk6b/locations/zrn61/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
-      [{}, [[{ sku_ref: "sku_refX" }], "zrk6b"]] => [:patch, "/catalogs/zrk6b/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
-      [{ catalog_id: "zrk6b" }, [[{ sku_ref: "sku_refX" }]]] => [:patch, "/catalogs/zrk6b/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [[{ sku_ref: "sku_refX" }], "catalogIdX", "locationIdX"]] => [:patch, "/catalogs/catalogIdX/locations/locationIdX/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [[{ sku_ref: "sku_refX" }], "catalogIdX"]] => [:patch, "/catalogs/catalogIdX/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
+      [{ catalog_id: "catalogIdX" }, [[{ sku_ref: "sku_refX" }]]] => [:patch, "/catalogs/catalogIdX/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
     },
     create_loyalty_card: {
-      [{ customer_list_id: "zrn61" }, [{ name: "LC1" }]] => [:post, "/customer_lists/zrn61/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],
-      [{}, [{ name: "LC1" }, "zrn61"]] => [:post, "/customer_lists/zrn61/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{ customer_list_id: "customerListIdX" }, [{ name: "LC1" }]] => [:post, "/customer_lists/customerListIdX/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, [{ name: "LC1" }, "customerListIdX"]] => [:post, "/customer_lists/customerListIdX/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
     create_loyalty_operation: {
-      [{ customer_list_id: "zrn61" }, ["wy3xz", { delta: "4.2" }]] => [:post, "/customer_lists/zrn61/loyalty_cards/wy3xz/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
-      [{}, ["wy3xz", { delta: "4.2" }, "zrn61"]] => [:post, "/customer_lists/zrn61/loyalty_cards/wy3xz/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{ customer_list_id: "customerListIdX" }, ["loyaltyCardIdX", { delta: "4.2" }]] => [:post, "/customer_lists/customerListIdX/loyalty_cards/loyaltyCardIdX/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
+      [{}, ["loyaltyCardIdX", { delta: "4.2" }, "customerListIdX"]] => [:post, "/customer_lists/customerListIdX/loyalty_cards/loyaltyCardIdX/operations", { body: { delta: "4.2" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
   }.each do |method, examples|
     describe "### #{method.upcase}" do

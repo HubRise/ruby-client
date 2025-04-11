@@ -37,9 +37,12 @@ module HubriseClient
       end
     end
 
-    def update_location(location_id, params)
+    def patch_location(location_id, params)
       call_api("/locations/#{location_id}", :patch, data: params)
     end
+
+    # @deprecated Use patch_location instead
+    alias_method :update_location, :patch_location
 
     # --------------------
     # Orders
@@ -63,6 +66,21 @@ module HubriseClient
 
     def patch_order(location_id, order_id, params)
       call_api("/locations/#{location_id}/orders/#{order_id}", :patch, data: params)
+    end
+
+    # --------------------
+    # Deliveries
+    # --------------------
+    def get_delivery(location_id, order_id)
+      call_api("/locations/#{location_id}/orders/#{order_id}/delivery")
+    end
+
+    def create_delivery(location_id, order_id, params)
+      call_api("/locations/#{location_id}/orders/#{order_id}/delivery", :post, data: params)
+    end
+
+    def patch_delivery(location_id, order_id, params)
+      call_api("/locations/#{location_id}/orders/#{order_id}/delivery", :patch, data: params)
     end
 
     # --------------------

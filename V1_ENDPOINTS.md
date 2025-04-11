@@ -6,122 +6,146 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
 
 ### GET_ACCOUNT
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_account("zrn61")
-  # [GET] /accounts/zrn61 with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_account("accountIdX")
+  # [GET] /accounts/accountIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.get_account
-  # [GET] /account with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /account with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_ACCOUNTS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.get_accounts
-  # [GET] /accounts with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /accounts with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_USER
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.get_user
-  # [GET] /user with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /user with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_LOCATIONS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.get_locations
-  # [GET] /locations with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /locations with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_LOCATION
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_location("zrn61")
-  # [GET] /locations/zrn61 with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_location("locationIdX")
+  # [GET] /locations/locationIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.get_location
-  # [GET] /location with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /location with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_ORDERS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_orders("zrn61", { status: "new" })
-  # [GET] /locations/zrn61/orders?status=new with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_orders("locationIdX", { status: "new" })
+  # [GET] /locations/locationIdX/orders?status=new with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_ORDER
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_order("zrn61", "wy3xz")
-  # [GET] /locations/zrn61/orders/wy3xz with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_order("locationIdX", "orderIdX")
+  # [GET] /locations/locationIdX/orders/orderIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### CREATE_ORDER
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.create_order("zrn61", { status: "new" })
-  # [POST] /locations/zrn61/orders with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"new\" }" }
+  client.create_order("locationIdX", { status: "new" })
+  # [POST] /locations/locationIdX/orders with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"new\" }" }
   ```
 
 ### UPDATE_ORDER
 
 - This method is deprecated. Use `PATCH_ORDER` instead.
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.update_order("zrn61", "wy3xz", { status: "delivered" })
-  # [PUT] /locations/zrn61/orders/wy3xz with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
+  client.update_order("locationIdX", "orderIdX", { status: "delivered" })
+  # [PUT] /locations/locationIdX/orders/orderIdX with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
   ```
 
 ### PATCH_ORDER
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.patch_order("zrn61", "wy3xz", { status: "delivered" })
-  # [PATCH] /locations/zrn61/orders/wy3xz with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
+  client.patch_order("locationIdX", "orderIdX", { status: "delivered" })
+  # [PATCH] /locations/locationIdX/orders/orderIdX with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
+  ```
+
+### GET_DELIVERY
+
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
+  ```ruby
+  client.get_delivery("locationIdX", "orderIdX")
+  # [GET] /locations/locationIdX/orders/orderIdX/delivery with { headers: { "X-Access-Token": "accessTokenX" }}
+  ```
+
+### CREATE_DELIVERY
+
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
+  ```ruby
+  client.create_delivery("locationIdX", "orderIdX", { carrier: "UPS" })
+  # [POST] /locations/locationIdX/orders/orderIdX/delivery with { headers: { "Content-Type": "application/json" }, body: "{\"carrier\":\"UPS\" }" }
+  ```
+
+### PATCH_DELIVERY
+
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
+  ```ruby
+  client.patch_delivery("locationIdX", "orderIdX", { status: "delivered" })
+  # [PATCH] /locations/locationIdX/orders/orderIdX/delivery with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
   ```
 
 ### GET_CALLBACK
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.get_callback
-  # [GET] /callback with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /callback with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_CALLBACK_EVENTS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.get_callback_events
-  # [GET] /callback/events with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /callback/events with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### DELETE_EVENT
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.delete_event("zrn61")
-  # [DELETE] /callback/events/zrn61 with { headers: { "X-Access-Token": "access_token1" }}
+  client.delete_event("eventIdX")
+  # [DELETE] /callback/events/eventIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### UPDATE_CALLBACK
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.update_callback({ "order": ["create"]})
   # [POST] /callback with { headers: { "Content-Type": "application/json" }, body: "{\"order\":[\"create\"]}" }
@@ -129,138 +153,138 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
 
 ### DELETE_CALLBACK
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.delete_callback
-  # [DELETE] /callback with { headers: { "X-Access-Token": "access_token1" }}
+  # [DELETE] /callback with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_LOCATION_CUSTOMER_LISTS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_location_customer_lists("zrn61")
-  # [GET] /locations/zrn61/customer_lists with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_location_customer_lists("locationIdX")
+  # [GET] /locations/locationIdX/customer_lists with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_ACCOUNT_CUSTOMER_LISTS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_account_customer_lists("zrn61")
-  # [GET] /accounts/zrn61/customer_lists with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_account_customer_lists("accountIdX")
+  # [GET] /accounts/accountIdX/customer_lists with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_CUSTOMER_LIST
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_customer_list("zrn61")
-  # [GET] /customer_lists/zrn61 with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_customer_list("customerListIdX")
+  # [GET] /customer_lists/customerListIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "wy3xz" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "customerListIdX" }`
   ```ruby
   client.get_customer_list
-  # [GET] /customer_lists/wy3xz with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /customer_lists/customerListIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_ALL_CUSTOMERS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_all_customers("zrn61")
-  # [GET] /customer_lists/zrn61/customers with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_all_customers("customerListIdX")
+  # [GET] /customer_lists/customerListIdX/customers with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "wy3xz" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "customerListIdX" }`
   ```ruby
   client.get_all_customers
-  # [GET] /customer_lists/wy3xz/customers with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /customer_lists/customerListIdX/customers with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### SEARCH_CUSTOMERS
 
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "zrn61" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "customerListIdX" }`
   ```ruby
-  client.search_customers({ email: "nsave@*" })
-  # [GET] /customer_lists/zrn61/customers?email=nsave@* with { headers: { "X-Access-Token": "access_token1" }}
+  client.search_customers({ email: "john@*" })
+  # [GET] /customer_lists/customerListIdX/customers?email=john@* with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.search_customers({ email: "nsave@*" }, "wy3xz")
-  # [GET] /customer_lists/wy3xz/customers?email=nsave@* with { headers: { "X-Access-Token": "access_token1" }}
+  client.search_customers({ email: "john@*" }, "customerListIdX")
+  # [GET] /customer_lists/customerListIdX/customers?email=john@* with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_CUSTOMER
 
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "zrn61" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "customerListIdX" }`
   ```ruby
-  client.get_customer("zrk6b")
-  # [GET] /customer_lists/zrn61/customers/zrk6b with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_customer("customerIdX")
+  # [GET] /customer_lists/customerListIdX/customers/customerIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_customer("zrk6b", "wy3xz")
-  # [GET] /customer_lists/wy3xz/customers/zrk6b with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_customer("customerIdX", "customerListIdX")
+  # [GET] /customer_lists/customerListIdX/customers/customerIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### CREATE_CUSTOMER
 
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "zrn61" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "customerListIdX" }`
   ```ruby
-  client.create_customer({ first_name: "nsave" })
-  # [POST] /customer_lists/zrn61/customers with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"nsave\" }" }
+  client.create_customer({ first_name: "John" })
+  # [POST] /customer_lists/customerListIdX/customers with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"John\" }" }
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.create_customer({ first_name: "nsave" }, "wy3xz")
-  # [POST] /customer_lists/wy3xz/customers with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"nsave\" }" }
+  client.create_customer({ first_name: "John" }, "customerListIdX")
+  # [POST] /customer_lists/customerListIdX/customers with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"John\" }" }
   ```
 
 ### UPDATE_CUSTOMER
 
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "zrn61" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "customerListIdX" }`
   ```ruby
-  client.update_customer("zrk6b", { first_name: "nsave" })
-  # [PUT] /customer_lists/zrn61/customers/zrk6b with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"nsave\" }" }
+  client.update_customer("customerIdX", { first_name: "John" })
+  # [PUT] /customer_lists/customerListIdX/customers/customerIdX with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"John\" }" }
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.update_customer("zrk6b", { first_name: "nsave" }, "wy3xz")
-  # [PUT] /customer_lists/wy3xz/customers/zrk6b with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"nsave\" }" }
+  client.update_customer("customerIdX", { first_name: "John" }, "customerListIdX")
+  # [PUT] /customer_lists/customerListIdX/customers/customerIdX with { headers: { "Content-Type": "application/json" }, body: "{\"first_name\":\"John\" }" }
   ```
 
 ### GET_LOCATION_CATALOGS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_location_catalogs("zrn61")
-  # [GET] /locations/zrn61/catalogs with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_location_catalogs("locationIdX")
+  # [GET] /locations/locationIdX/catalogs with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_ACCOUNT_CATALOGS
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_account_catalogs("zrn61")
-  # [GET] /accounts/zrn61/catalogs with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_account_catalogs("accountIdX")
+  # [GET] /accounts/accountIdX/catalogs with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_CATALOG
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_catalog("zrn61")
-  # [GET] /catalogs/zrn61 with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_catalog("catalogIdX")
+  # [GET] /catalogs/catalogIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "wy3xz" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
   client.get_catalog
-  # [GET] /catalogs/wy3xz with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /catalogs/catalogIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### CREATE_ACCOUNT_CATALOG
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.create_account_catalog({ name: "Catalog1" })
   # [POST] /account/catalogs with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
@@ -268,12 +292,12 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
 
 ### CREATE_LOCATION_CATALOG
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.create_location_catalog({ name: "Catalog1" }, "zrn61")
-  # [POST] /locations/zrn61/catalogs with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
+  client.create_location_catalog({ name: "Catalog1" }, "locationIdX")
+  # [POST] /locations/locationIdX/catalogs with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
   client.create_location_catalog({ name: "Catalog1" })
   # [POST] /location/catalogs with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
@@ -281,145 +305,145 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
 
 ### UPDATE_CATALOG
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.update_catalog({ name: "Catalog1" }, "zrn61")
-  # [PUT] /catalogs/zrn61 with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
+  client.update_catalog({ name: "Catalog1" }, "catalogIdX")
+  # [PUT] /catalogs/catalogIdX with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrk6b" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
   client.update_catalog({ name: "Catalog1" })
-  # [PUT] /catalogs/zrk6b with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
+  # [PUT] /catalogs/catalogIdX with { headers: { "Content-Type": "application/json" }, body: "{\"name\":\"Catalog1\" }" }
   ```
 
 ### CREATE_IMAGE
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.create_image("bin1", "image/png", "zrn61")
-  # [POST] /catalogs/zrn61/images with { headers: { "Content-Type": "image/png" }, body: "bin1" }
+  client.create_image("bin1", "image/png", "catalogIdX")
+  # [POST] /catalogs/catalogIdX/images with { headers: { "Content-Type": "image/png" }, body: "bin1" }
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrk6b" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
   client.create_image("bin1", "image/png")
-  # [POST] /catalogs/zrk6b/images with { headers: { "Content-Type": "image/png" }, body: "bin1" }
+  # [POST] /catalogs/catalogIdX/images with { headers: { "Content-Type": "image/png" }, body: "bin1" }
   ```
 
 ### GET_IMAGES
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_images("wy3xz")
-  # [GET] /catalogs/wy3xz/images with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_images("orderIdX")
+  # [GET] /catalogs/orderIdX/images with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrk6b" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
   client.get_images
-  # [GET] /catalogs/zrk6b/images with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /catalogs/catalogIdX/images with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_IMAGE
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_image("zrn61", "wy3xz")
-  # [GET] /catalogs/wy3xz/images/zrn61 with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_image("imageIdX", "catalogIdX")
+  # [GET] /catalogs/catalogIdX/images/imageIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrk6b" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
-  client.get_image("zrn61")
-  # [GET] /catalogs/zrk6b/images/zrn61 with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_image("imageIdX")
+  # [GET] /catalogs/catalogIdX/images/imageIdX with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_IMAGE_DATA
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_image_data("zrn61", "wy3xz")
-  # [GET] /catalogs/wy3xz/images/zrn61/data with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_image_data("imageIdX", "catalogIdX")
+  # [GET] /catalogs/catalogIdX/images/imageIdX/data with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrk6b" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
-  client.get_image_data("zrn61")
-  # [GET] /catalogs/zrk6b/images/zrn61/data with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_image_data("imageIdX")
+  # [GET] /catalogs/catalogIdX/images/imageIdX/data with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### GET_INVENTORY
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_inventory("zrn61", "wy3xz")
-  # [GET] /catalogs/zrn61/locations/wy3xz/inventory with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_inventory("catalogIdX", "locationIdX")
+  # [GET] /catalogs/catalogIdX/locations/locationIdX/inventory with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.get_inventory("zrn61")
-  # [GET] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }}
+  client.get_inventory("catalogIdX")
+  # [GET] /catalogs/catalogIdX/location/inventory with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrn61" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
   client.get_inventory
-  # [GET] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }}
+  # [GET] /catalogs/catalogIdX/location/inventory with { headers: { "X-Access-Token": "accessTokenX" }}
   ```
 
 ### UPDATE_INVENTORY
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.update_inventory([{sku_ref: "m9qqs"}], "zrn61", "wy3xz")
-  # [PUT] /catalogs/zrn61/locations/wy3xz/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  client.update_inventory([{sku_ref: "m9qqs"}], "catalogIdX", "locationIdX")
+  # [PUT] /catalogs/catalogIdX/locations/locationIdX/inventory with { headers: { "X-Access-Token": "accessTokenX" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.update_inventory([{sku_ref: "m9qqs"}], "zrn61")
-  # [PUT] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  client.update_inventory([{sku_ref: "m9qqs"}], "catalogIdX")
+  # [PUT] /catalogs/catalogIdX/location/inventory with { headers: { "X-Access-Token": "accessTokenX" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrn61" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
   client.update_inventory([{sku_ref: "m9qqs"}])
-  # [PUT] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  # [PUT] /catalogs/catalogIdX/location/inventory with { headers: { "X-Access-Token": "accessTokenX" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
   ```
 
 ### PATCH_INVENTORY
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.patch_inventory([{sku_ref: "m9qqs"}], "zrn61", "wy3xz")
-  # [PATCH] /catalogs/zrn61/locations/wy3xz/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  client.patch_inventory([{sku_ref: "m9qqs"}], "catalogIdX", "locationIdX")
+  # [PATCH] /catalogs/catalogIdX/locations/locationIdX/inventory with { headers: { "X-Access-Token": "accessTokenX" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.patch_inventory([{sku_ref: "m9qqs"}], "zrn61")
-  # [PATCH] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  client.patch_inventory([{sku_ref: "m9qqs"}], "locationIdX")
+  # [PATCH] /catalogs/catalogIdX/location/inventory with { headers: { "X-Access-Token": "accessTokenX" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", catalog_id: "zrn61" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", catalog_id: "catalogIdX" }`
   ```ruby
   client.patch_inventory([{sku_ref: "m9qqs"}])
-  # [PATCH] /catalogs/zrn61/location/inventory with { headers: { "X-Access-Token": "access_token1" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
+  # [PATCH] /catalogs/catalogIdX/location/inventory with { headers: { "X-Access-Token": "accessTokenX" }, body: "[{\"sku_ref\":\"m9qqs\"}]"}
   ```
 
 ### CREATE_LOYALTY_CARD
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.create_loyalty_card({ name: "bonus" }, "wy3xz")
-  # [POST] /customer_lists/wy3xz/loyalty_cards with { headers: { "X-Access-Token": "access_token1" }, body: { name: "bonus" } }
+  client.create_loyalty_card({ name: "bonus" }, "customerListIdX")
+  # [POST] /customer_lists/customerListIdX/loyalty_cards with { headers: { "X-Access-Token": "accessTokenX" }, body: { name: "bonus" } }
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "zrk6b" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "customerListIdX" }`
   ```ruby
   client.create_loyalty_card({ name: "bonus" })
-  # [POST] /customer_lists/zrk6b/loyalty_cards with { headers: { "X-Access-Token": "access_token1" }, body: { name: "bonus" } }
+  # [POST] /customer_lists/customerListIdX/loyalty_cards with { headers: { "X-Access-Token": "accessTokenX" }, body: { name: "bonus" } }
   ```
 
 ### CREATE_LOYALTY_OPERATION
 
-- Initialized with `client_attrs = { access_token: "access_token1" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
   ```ruby
-  client.create_loyalty_operation("zrk6b", { delta: "4.2" }, "wy3xz")
-  # [POST] /customer_lists/wy3xz/loyalty_cards/zrk6b/operations with { headers: { "X-Access-Token": "access_token1" }, body: { delta: "4.2" } }
+  client.create_loyalty_operation("loyaltyCardIdX", { delta: "4.2" }, "customerListIdX")
+  # [POST] /customer_lists/customerListIdX/loyalty_cards/loyaltyCardIdX/operations with { headers: { "X-Access-Token": "accessTokenX" }, body: { delta: "4.2" } }
   ```
-- Initialized with `client_attrs = { access_token: "access_token1", customer_list_id: "q2brk" }`
+- Initialized with `client_attrs = { access_token: "accessTokenX", customer_list_id: "q2brk" }`
   ```ruby
-  client.create_loyalty_operation("zrk6b", { delta: "4.2" })
-  # [POST] /customer_lists/q2brk/loyalty_cards/zrk6b/operations with { headers: { "X-Access-Token": "access_token1" }, body: { delta: "4.2" } }
+  client.create_loyalty_operation("loyaltyCardIdX", { delta: "4.2" })
+  # [POST] /customer_lists/q2brk/loyalty_cards/loyaltyCardIdX/operations with { headers: { "X-Access-Token": "accessTokenX" }, body: { delta: "4.2" } }
   ```
