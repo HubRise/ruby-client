@@ -177,10 +177,10 @@ module HubriseClient
     # --------------------
     # Images
     # --------------------
-    def create_image(data, mime_type, catalog_id = nil)
-      call_api("/catalogs/#{catalog_id_fallback(catalog_id)}/images", :post, data: data,
-                                                                             headers: { "Content-Type" => mime_type },
-                                                                             json: false)
+    def create_image(data, mime_type, catalog_id = nil, options = {})
+      path = "/catalogs/#{catalog_id_fallback(catalog_id)}/images"
+      path += "?private_ref=#{CGI.escape(options[:private_ref])}" if options[:private_ref]
+      call_api(path, :post, data: data, headers: { "Content-Type" => mime_type }, json: false)
     end
 
     def get_images(catalog_id = nil)

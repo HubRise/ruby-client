@@ -117,6 +117,7 @@ describe HubriseClient::V1 do
     },
     create_image: {
       [{}, ["bin1", "image/png", "catalogIdX"]] => [:post, "/catalogs/catalogIdX/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
+      [{}, ["bin1", "image/png", "catalogIdX", { private_ref: "refX" }]] => [:post, "/catalogs/catalogIdX/images?private_ref=refX", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
       [{ catalog_id: "zrk6b" }, ["bin1", "image/png"]] => [:post, "/catalogs/zrk6b/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
     },
     get_images: {
