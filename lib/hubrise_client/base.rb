@@ -38,8 +38,8 @@ module HubriseClient
 
     def build_authorization_url(redirect_uri, scope, params = {})
       params = params.merge(
-        redirect_uri: redirect_uri,
-        scope: scope,
+        redirect_uri:,
+        scope:,
         client_id: @app_id
       )
 
@@ -83,9 +83,9 @@ module HubriseClient
       raise(HubriseAccessTokenMissing) if @access_token.nil?
 
       api_request(
-        "#{@api_host}:#{@api_port}/#{version}", path, method, data: data,
-                                                              json: json,
-                                                              headers: headers,
+        "#{@api_host}:#{@api_port}/#{version}", path, method, data:,
+                                                              json:,
+                                                              headers:,
                                                               access_token: @access_token,
                                                               callback: @request_callback
       ).perform
@@ -94,9 +94,9 @@ module HubriseClient
     def api_request(hostname, path, method, attrs = {})
       Request.from_h(
         {
-          hostname: hostname,
-          path: path,
-          method: method,
+          hostname:,
+          path:,
+          method:,
           use_https: @use_https,
           logger: @verbous && @logger,
           json: true,
