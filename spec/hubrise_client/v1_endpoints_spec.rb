@@ -24,6 +24,7 @@ describe HubriseClient::V1 do
     patch_location: {
       [{}, ["locationIdX", { cutoff_time: "06:00" }]] => [:patch, "/locations/locationIdX", { body: { cutoff_time: "06:00" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
+    # --------------------
     get_orders: {
       [{}, ["locationIdX", { status: "new" }]] => [:get, "/locations/locationIdX/orders?status=new"],
     },
@@ -39,6 +40,7 @@ describe HubriseClient::V1 do
     patch_order: {
       [{}, ["locationIdX", "orderIdX", { status: "delivered" }]] => [:patch, "/locations/locationIdX/orders/orderIdX", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
+    # --------------------
     get_delivery: {
       [{}, ["locationIdX", "orderIdX"]] => [:get, "/locations/locationIdX/orders/orderIdX/delivery"],
     },
@@ -48,6 +50,20 @@ describe HubriseClient::V1 do
     patch_delivery: {
       [{}, ["locationIdX", "orderIdX", { status: "delivered" }]] => [:patch, "/locations/locationIdX/orders/orderIdX/delivery", { body: { status: "delivered" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
+    # --------------------
+    get_delivery_quotes: {
+      [{}, ["locationIdX", "orderIdX"]] => [:get, "/locations/locationIdX/orders/orderIdX/delivery_quotes"],
+    },
+    get_delivery_quote: {
+      [{}, ["locationIdX", "orderIdX", "quoteIdX"]] => [:get, "/locations/locationIdX/orders/orderIdX/delivery_quotes/quoteIdX"],
+    },
+    create_delivery_quote: {
+      [{}, ["locationIdX", "orderIdX", { carrier: "UPS" }]] => [:post, "/locations/locationIdX/orders/orderIdX/delivery_quotes", { body: { carrier: "UPS" }.to_json, headers: { "Content-Type" => "application/json" } }],
+    },
+    accept_delivery_quote: {
+      [{}, ["locationIdX", "orderIdX", "quoteIdX"]] => [:post, "/locations/locationIdX/orders/orderIdX/delivery_quotes/quoteIdX/accept"],
+    },
+    # --------------------
     get_callback: {
       [{}, []] => [:get, "/callback"],
     },
@@ -63,6 +79,7 @@ describe HubriseClient::V1 do
     delete_callback: {
       [{}, []] => [:delete, "/callback"],
     },
+    # --------------------
     get_location_customer_lists: {
       [{}, ["locationIdX"]] => [:get, "/locations/locationIdX/customer_lists"],
     },
@@ -93,6 +110,7 @@ describe HubriseClient::V1 do
       [{ customer_list_id: "customerListIdX" }, ["customerIdX", { first_name: "nsave" }]] => [:put, "/customer_lists/customerListIdX/customers/customerIdX", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
       [{}, ["customerIdX", { first_name: "nsave" }, "customerListIdX"]] => [:put, "/customer_lists/customerListIdX/customers/customerIdX", { body: { first_name: "nsave" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
+    # --------------------
     get_location_catalogs: {
       [{}, ["locationIdX"]] => [:get, "/locations/locationIdX/catalogs"],
     },
@@ -115,6 +133,7 @@ describe HubriseClient::V1 do
       [{}, [{ name: "Catalog1" }, "catalogIdX"]] => [:put, "/catalogs/catalogIdX", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
       [{ catalog_id: "zrk6b" }, [{ name: "Catalog1" }]] => [:put, "/catalogs/zrk6b", { body: { name: "Catalog1" }.to_json, headers: { "Content-Type" => "application/json" } }],
     },
+    # --------------------
     create_image: {
       [{}, ["bin1", "image/png", "catalogIdX"]] => [:post, "/catalogs/catalogIdX/images", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
       [{}, ["bin1", "image/png", "catalogIdX", { private_ref: "refX" }]] => [:post, "/catalogs/catalogIdX/images?private_ref=refX", { body: "bin1", headers: { "Content-Type" => "image/png" } }],
@@ -132,6 +151,7 @@ describe HubriseClient::V1 do
       [{}, ["imageIdX", "catalogIdX"]] => [:get, "/catalogs/catalogIdX/images/imageIdX/data"],
       [{ catalog_id: "catalogIdX" }, ["imageIdX"]] => [:get, "/catalogs/catalogIdX/images/imageIdX/data"],
     },
+    # --------------------
     get_inventory: {
       [{}, ["catalogIdX", "locationIdX"]] => [:get, "/catalogs/catalogIdX/locations/locationIdX/inventory"],
       [{}, ["catalogIdX"]] => [:get, "/catalogs/catalogIdX/location/inventory"],
@@ -147,6 +167,7 @@ describe HubriseClient::V1 do
       [{}, [[{ sku_ref: "sku_refX" }], "catalogIdX"]] => [:patch, "/catalogs/catalogIdX/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
       [{ catalog_id: "catalogIdX" }, [[{ sku_ref: "sku_refX" }]]] => [:patch, "/catalogs/catalogIdX/location/inventory", { body: [{ sku_ref: "sku_refX" }].to_json, headers: { "Content-Type" => "application/json" } }],
     },
+    # --------------------
     create_loyalty_card: {
       [{ customer_list_id: "customerListIdX" }, [{ name: "LC1" }]] => [:post, "/customer_lists/customerListIdX/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],
       [{}, [{ name: "LC1" }, "customerListIdX"]] => [:post, "/customer_lists/customerListIdX/loyalty_cards", { body: { name: "LC1" }.to_json, headers: { "Content-Type" => "application/json" } }],

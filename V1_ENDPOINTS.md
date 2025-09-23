@@ -119,6 +119,38 @@ client = HubriseClient::V1.new(CLIENT_ID, CLIENT_SECRET, client_attrs)
   # [PATCH] /locations/locationIdX/orders/orderIdX/delivery with { headers: { "Content-Type": "application/json" }, body: "{\"status\":\"delivered\" }" }
   ```
 
+### GET_DELIVERY_QUOTES
+
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
+  ```ruby
+  client.get_delivery_quotes("locationIdX", "orderIdX")
+  # [GET] /locations/locationIdX/orders/orderIdX/delivery_quotes with { headers: { "X-Access-Token": "accessTokenX" }}
+  ```
+
+### GET_DELIVERY_QUOTE
+
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
+  ```ruby
+  client.get_delivery_quote("locationIdX", "orderIdX", "quoteIdX")
+  # [GET] /locations/locationIdX/orders/orderIdX/delivery_quotes/quoteIdX with { headers: { "X-Access-Token": "accessTokenX" }}
+  ```
+
+### CREATE_DELIVERY_QUOTE
+
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
+  ```ruby
+  client.create_delivery_quote("locationIdX", "orderIdX", { carrier: "UPS" })
+  # [POST] /locations/locationIdX/orders/orderIdX/delivery_quotes with { headers: { "Content-Type": "application/json" }, body: "{\"carrier\":\"UPS\" }" }
+  ```
+
+### ACCEPT_DELIVERY_QUOTE
+
+- Initialized with `client_attrs = { access_token: "accessTokenX" }`
+  ```ruby
+  client.accept_delivery_quote("locationIdX", "orderIdX", "quoteIdX")
+  # [POST] /locations/locationIdX/orders/orderIdX/delivery_quotes/quoteIdX/accept with { headers: { "X-Access-Token": "accessTokenX" }}
+  ``` 
+
 ### GET_CALLBACK
 
 - Initialized with `client_attrs = { access_token: "accessTokenX" }`

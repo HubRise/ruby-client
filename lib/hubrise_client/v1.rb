@@ -84,6 +84,25 @@ module HubriseClient
     end
 
     # --------------------
+    # Delivery quotes
+    # --------------------
+    def get_delivery_quotes(location_id, order_id)
+      call_api("/locations/#{location_id}/orders/#{order_id}/delivery_quotes")
+    end
+
+    def get_delivery_quote(location_id, order_id, quote_id)
+      call_api("/locations/#{location_id}/orders/#{order_id}/delivery_quotes/#{quote_id}")
+    end
+
+    def create_delivery_quote(location_id, order_id, params)
+      call_api("/locations/#{location_id}/orders/#{order_id}/delivery_quotes", :post, data: params)
+    end
+
+    def accept_delivery_quote(location_id, order_id, quote_id)
+      call_api("/locations/#{location_id}/orders/#{order_id}/delivery_quotes/#{quote_id}/accept", :post)
+    end
+
+    # --------------------
     # Callback, events
     # --------------------
     def get_callback
