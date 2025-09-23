@@ -115,7 +115,7 @@ bundle exec rspec
 3. Tag the repository:
 
 ```bash
-VERSION=2.0.9
+VERSION=2.0.16
 git add lib/hubrise_client/version.rb
 git commit -m "Version $VERSION"
 git tag v$VERSION
