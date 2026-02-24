@@ -129,7 +129,7 @@ describe HubriseClient::V1 do
         expect(called).to be_truthy
       end
 
-      it "calls callback wihtout response for network error" do
+      it "calls callback without response for network error" do
         stub_request(:get, "https://api.hubrise.com/v1/some_path").to_raise(Errno::ECONNREFUSED)
 
         called = false
